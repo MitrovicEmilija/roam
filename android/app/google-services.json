@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "469830127107",
+    "project_id": "roam-ac3ea",
+    "storage_bucket": "roam-ac3ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469830127107:android:d0357ad2a28a7285ab0836",
+        "android_client_info": {
+          "package_name": "com.example.roam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469830127107-ci0qf86bkf4mk4i83243c8drq2i12f93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.roam",
+            "certificate_hash": "cb2d267143e6311ba96bf89dbb020cbe50cfd70d"
+          }
+        },
+        {
+          "client_id": "469830127107-gfotj1sc2n0ipojihks4pi9eppn3lmg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC74QJ13ai7WMxEdStWXxE1ZoEWLOENGAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469830127107-gfotj1sc2n0ipojihks4pi9eppn3lmg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
