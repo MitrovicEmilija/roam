@@ -1,14 +1,13 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:roam/core/common/star_rating.dart';
+import 'package:roam/features/home/controller/home_controller.dart';
+import 'package:roam/models/place_model.dart';
 import 'package:roam/theme/pallete.dart';
 
 class FeedScreen extends ConsumerStatefulWidget {
-  const FeedScreen({super.key});
+  const FeedScreen({Key? key}) : super(key: key);
 
   @override
   ConsumerState<FeedScreen> createState() => _FeedScreenState();
@@ -16,45 +15,21 @@ class FeedScreen extends ConsumerStatefulWidget {
 
 class _FeedScreenState extends ConsumerState<FeedScreen> {
   final TextEditingController _cityController = TextEditingController();
-  String name = '';
-  double latitude = 0.0;
-  double longitude = 0.0;
-  String country = '';
 
-  @override
-  void initState() {
-    super.initState();
-    fetchPlaces();
+  void fetchPlaces(WidgetRef ref, String city) {
+    ref.read(homeControllerProvider.notifier).fetchPlaces(city);
   }
 
-  List<Map<String, dynamic>> fetchedPlaces = [];
-
-  Future<void> fetchPlaces() async {
-    try {
-      const apiKey = 'GuGZtV8WBlVY791b9I9l0g==vi1ujRdLX8yYacry';
-      final city = _cityController.text;
-      final url = 'https://api.api-ninjas.com/v1/geocoding?city=$city';
-
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {'X-Api-Key': apiKey},
-      );
-
-      List<dynamic> responseData = jsonDecode(response.body);
-
-      List<Map<String, dynamic>> places =
-          List<Map<String, dynamic>>.from(responseData);
-
-      setState(() {
-        fetchedPlaces = places;
-      });
-    } on Exception catch (e) {
-      if (kDebugMode) print(e.toString().toUpperCase());
-    }
+  void likePlace(WidgetRef ref, Place place) {
+    ref
+        .read(homeControllerProvider.notifier)
+        .storeToPreferences(place, context);
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Place> fetchedPlaces = ref.watch(homeControllerProvider);
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(18),
@@ -75,45 +50,109 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             const SizedBox(
               height: 10,
             ),
-            TextField(
-              controller: _cityController,
-              decoration: const InputDecoration(
-                hintText: 'Paris',
-                hintStyle: TextStyle(
-                  fontFamily: 'Mulish',
-                  fontSize: 12,
-                  color: Pallete.greyText,
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _cityController,
+                    decoration: InputDecoration(
+                      hintText: 'Paris',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'Mulish',
+                        fontSize: 12,
+                        color: Pallete.greyText,
+                      ),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.all(18),
+                    ),
+                  ),
                 ),
-                filled: true,
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(18),
-              ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      fetchPlaces(ref, _cityController.text.trim());
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Pallete.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    fixedSize: const Size(50, 50),
+                  ),
+                  child: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
-              height: 5,
+              height: 10,
             ),
-            ElevatedButton(
-              onPressed: fetchPlaces,
-              child: const Text('Get place'),
-            ),
-            Center(
-              child: SizedBox(
-                width:
-                    double.infinity, // Make the list fill the available width
-                height: 300.0, // Adjust the height as needed
-                child: ListView.builder(
-                  itemCount: fetchedPlaces.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final place = fetchedPlaces[index];
-                    return ListTile(
-                      title: Text('Name: ${place['name']}'),
-                      subtitle: Text(
-                          'Latitude: ${place['latitude']}, Longitude: ${place['longitude']}, Country: ${place['country']}'),
-                    );
-                  },
-                ),
+            SizedBox(
+              width: double.infinity,
+              height: 300.0,
+              child: ListView.builder(
+                itemCount: fetchedPlaces.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final place = fetchedPlaces[index];
+                  return Card(
+                    elevation: 4.0,
+                    margin: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            place.name,
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                          subtitle: Text(
+                            place.country,
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 14,
+                              color: Pallete.blue,
+                            ),
+                          ),
+                          trailing: const Icon(
+                            Icons.location_on,
+                            color: Pallete.blue,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              StarRating(
+                                rating: 3,
+                                onRatingChanged: (rating) {},
+                              ),
+                              IconButton(
+                                icon: place.isLiked
+                                    ? const Icon(Icons.favorite)
+                                    : const Icon(Icons.favorite_border),
+                                onPressed: () => likePlace(ref, place),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            )
+            ),
           ],
         ),
       ),

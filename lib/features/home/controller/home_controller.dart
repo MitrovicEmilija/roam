@@ -1,44 +1,57 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:roam/core/providers/storage_repository_provider.dart';
+import 'package:roam/core/utils.dart';
+import 'package:roam/features/auth/controller/auth_controller.dart';
 import 'package:roam/features/home/repository/home_repository.dart';
+import 'package:roam/models/place_model.dart';
 
 final homeControllerProvider =
-    StateNotifierProvider<HomeController, bool>((ref) {
+    StateNotifierProvider<HomeController, List<Place>>((ref) {
   final homeRepository = ref.watch(homeRepositoryProvider);
-  final storage = ref.watch(storageRepositoryProvider);
 
   return HomeController(
     homeRepository: homeRepository,
-    storage: storage,
     ref: ref,
   );
 });
 
-class HomeController extends StateNotifier<bool> {
+class HomeController extends StateNotifier<List<Place>> {
   final HomeRepository _homeRepository;
+  final Ref _ref;
 
-  HomeController(
-      {required HomeRepository homeRepository,
-      required StorageRepository storage,
-      required Ref ref})
+  HomeController({required HomeRepository homeRepository, required Ref ref})
       : _homeRepository = homeRepository,
-        super(false);
-}
+        _ref = ref,
+        super([]); // Initialize with an empty list
 
-/*
-  FutureVoid fetchAndSavePlaces(double latitude, double longitude) async {
+  void fetchPlaces(String city) async {
     try {
-      state = true;
-      final placesData = await fetchPlacesFromApi(latitude, longitude);
-      for (var placeData in placesData) {
-        final place = Place.fromMap(placeData);
-        await _homeRepository.savePlace(place);
+      // Set loading state to true
+      state = [];
+
+      // Fetch places from repository
+      List<Place> places = await _homeRepository.fetchPlaces(city);
+
+      // Update fetched places
+      state = places;
+
+      if (kDebugMode) {
+        print(state);
       }
-      state = false;
     } catch (e) {
-      if (kDebugMode) print('Error fetching and saving places: $e');
-      rethrow;
+      if (kDebugMode) {
+        print('Error fetching places: $e');
+      }
     }
   }
-  */
+
+  void storeToPreferences(Place place, BuildContext context) async {
+    final user = _ref.read(userProvider)!;
+    state = []; // Clear the previous state
+    final res = await _homeRepository.storeToPreferences(place, user.uid);
+    res.fold((l) => showSnackBar(context, l.message),
+        (r) => showSnackBar(context, 'Added to favourites.'));
+  }
+}

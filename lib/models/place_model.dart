@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Place {
@@ -6,11 +5,15 @@ class Place {
   final double latitude;
   final double longitude;
   final String country;
+  final int rating;
+  bool isLiked;
   Place({
     required this.name,
     required this.latitude,
     required this.longitude,
     required this.country,
+    required this.rating,
+    this.isLiked = false,
   });
 
   Place copyWith({
@@ -24,6 +27,7 @@ class Place {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       country: country ?? this.country,
+      rating: rating,
     );
   }
 
@@ -33,6 +37,7 @@ class Place {
       'latitude': latitude,
       'longitude': longitude,
       'country': country,
+      'rating': rating,
     };
   }
 
@@ -42,6 +47,7 @@ class Place {
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,
       country: map['country'] as String,
+      rating: map['rating'] as int,
     );
   }
 
@@ -52,7 +58,7 @@ class Place {
 
   @override
   String toString() {
-    return 'Place(name: $name, latitude: $latitude, longitude: $longitude, country: $country)';
+    return 'Place(name: $name, latitude: $latitude, longitude: $longitude, country: $country, rating: $rating)';
   }
 
   @override
@@ -62,7 +68,8 @@ class Place {
     return other.name == name &&
         other.latitude == latitude &&
         other.longitude == longitude &&
-        other.country == country;
+        other.country == country &&
+        other.rating == rating;
   }
 
   @override
@@ -70,6 +77,7 @@ class Place {
     return name.hashCode ^
         latitude.hashCode ^
         longitude.hashCode ^
-        country.hashCode;
+        country.hashCode ^
+        rating.hashCode;
   }
 }

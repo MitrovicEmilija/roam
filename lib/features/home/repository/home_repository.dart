@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -18,18 +22,47 @@ class HomeRepository {
   HomeRepository({required FirebaseFirestore firestore})
       : _firestore = firestore;
 
-  CollectionReference get _places =>
-      _firestore.collection(FirebaseConstants.placesCollection);
+  CollectionReference get _users =>
+      _firestore.collection(FirebaseConstants.usersCollection);
 
-  FutureVoid savePlace(Place place) async {
+  Future<List<Place>> fetchPlaces(String city) async {
     try {
-      var placeDoc = await _places.doc(place.name).get();
-      if (placeDoc.exists) {
-        throw 'Place with the same name already exists.';
-      }
-      return right(_places.doc(place.name).set(place.toMap()));
+      const apiKey = 'GuGZtV8WBlVY791b9I9l0g==vi1ujRdLX8yYacry';
+      final url = 'https://api.api-ninjas.com/v1/geocoding?city=$city';
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {'X-Api-Key': apiKey},
+      );
+
+      List<dynamic> responseData = jsonDecode(response.body);
+
+      List<Place> places = responseData.map((data) {
+        return Place(
+          name: data['name'] as String,
+          latitude: (data['latitude'] as num).toDouble(),
+          longitude: (data['longitude'] as num).toDouble(),
+          country: data['country'] as String,
+          rating: 3,
+          isLiked: false,
+        );
+      }).toList();
+
+      return places;
+    } catch (e) {
+      if (kDebugMode) print(e.toString().toUpperCase());
+      return [];
+    }
+  }
+
+  FutureVoid storeToPreferences(Place place, String userId) async {
+    try {
+      return right(_users.doc(userId).update({
+        'preferences': FieldValue.arrayUnion([place]),
+        'isLiked': true
+      }));
     } on FirebaseException catch (e) {
-      return left(Failure(e.message!));
+      throw e.message!;
     } catch (e) {
       return left(Failure(e.toString()));
     }
