@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:roam/core/common/error_text.dart';
+import 'package:roam/core/common/loader.dart';
 
-import 'package:roam/core/common/star_rating.dart';
 import 'package:roam/features/home/controller/home_controller.dart';
 import 'package:roam/models/place_model.dart';
 import 'package:roam/theme/pallete.dart';
@@ -15,11 +16,11 @@ class FeedScreen extends ConsumerStatefulWidget {
 }
 
 class _FeedScreenState extends ConsumerState<FeedScreen> {
-  final TextEditingController _cityController = TextEditingController();
-
+  /*
   void fetchPlacesFromTrail(WidgetRef ref) {
     ref.read(homeControllerProvider.notifier).fetchPlacesFromTrail();
   }
+  */
 
   void likePlace(WidgetRef ref, Place place) {
     ref
@@ -29,139 +30,142 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Place> fetchedPlaces = ref.watch(homeControllerProvider);
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(18),
         child: Column(
           children: [
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Travel the world in grand style',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 27,
-                  color: Pallete.lightGreen,
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Travel the world in grand style',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27,
+                    color: Pallete.lightGreen,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _cityController,
-                    decoration: InputDecoration(
-                      hintText: 'Paris',
-                      hintStyle: const TextStyle(
-                        fontFamily: 'Mulish',
-                        fontSize: 12,
-                        color: Pallete.greyText,
-                      ),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.all(18),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      fetchPlacesFromTrail(ref);
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Pallete.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    fixedSize: const Size(50, 50),
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
             ),
             const SizedBox(
               height: 10,
             ),
             SizedBox(
               width: double.infinity,
-              height: 300.0,
-              child: ListView.builder(
-                itemCount: fetchedPlaces.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final place = fetchedPlaces[index];
-                  return Card(
-                    elevation: 4.0,
-                    margin: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: SizedBox(
-                            width: 100,
-                            height: 70,
-                            child: AnyLinkPreview(
-                              displayDirection:
-                                  UIDirection.uiDirectionHorizontal,
-                              link: place.webUrl,
-                            ),
-                          ),
-                          title: Text(
-                            place.name,
-                            style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                            ),
-                          ),
-                          subtitle: Text(
-                            place.country,
-                            style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 14,
-                              color: Pallete.blue,
-                            ),
-                          ),
-                          trailing: const Icon(
-                            Icons.location_on,
-                            color: Pallete.blue,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+              height: 500.0,
+              child: ref.watch(placesProvider).when(
+                    data: (fetchedPlaces) => ListView.builder(
+                      itemCount: fetchedPlaces.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final place = fetchedPlaces[index];
+                        return Card(
+                          elevation: 4.0,
+                          margin: const EdgeInsets.all(8.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              StarRating(
-                                rating: 3,
-                                onRatingChanged: (rating) {},
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: AnyLinkPreview(
+                                    displayDirection:
+                                        UIDirection.uiDirectionHorizontal,
+                                    link: place.webUrl,
+                                  ),
+                                ),
                               ),
-                              IconButton(
-                                icon: place.isLiked
-                                    ? const Icon(Icons.favorite)
-                                    : const Icon(Icons.favorite_border),
-                                onPressed: () {},
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        place.name,
+                                        style: const TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.location_on,
+                                            color: Pallete.blue,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(
+                                              width: 4), // Adjust spacing here
+                                          Text(
+                                            'Country: ${place.country}',
+                                            style: const TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                              color: Pallete.blue,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: Pallete.lightGreen,
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: Text(
+                                          place.category,
+                                          style: const TextStyle(
+                                            fontFamily: 'Mulish',
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: IconButton(
+                                              icon: place.isLiked
+                                                  ? const Icon(Icons.favorite)
+                                                  : const Icon(
+                                                      Icons.favorite_border),
+                                              onPressed: () {},
+                                            ),
+                                          ),
+                                          const SizedBox(width: 8),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                    error: (error, stackTrace) =>
+                        ErrorText(error: error.toString()),
+                    loading: () => const Loader(),
+                  ),
             ),
           ],
         ),

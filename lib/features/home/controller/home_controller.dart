@@ -7,6 +7,15 @@ import 'package:roam/features/auth/controller/auth_controller.dart';
 import 'package:roam/features/home/repository/home_repository.dart';
 import 'package:roam/models/place_model.dart';
 
+final placesProvider = StreamProvider((ref) {
+  final homeController = ref.watch(homeControllerProvider.notifier);
+  return homeController.getPlaces();
+});
+
+final searchPlaceProvider = StreamProvider.family((ref, String query) {
+  return ref.watch(homeControllerProvider.notifier).searchPlace(query);
+});
+
 final homeControllerProvider =
     StateNotifierProvider<HomeController, List<Place>>((ref) {
   final homeRepository = ref.watch(homeRepositoryProvider);
@@ -25,6 +34,14 @@ class HomeController extends StateNotifier<List<Place>> {
       : _homeRepository = homeRepository,
         _ref = ref,
         super([]); // Initialize with an empty list
+
+  Stream<List<Place>> getPlaces() {
+    return _homeRepository.getPLaces();
+  }
+
+  Stream<List<Place>> searchPlace(String query) {
+    return _homeRepository.searchPlace(query);
+  }
 
   void fetchPlacesFromTrail() async {
     try {

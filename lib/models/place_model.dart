@@ -6,6 +6,7 @@ class Place {
   final double longitude;
   final String country;
   final String webUrl;
+  final String category;
   final int rating;
   bool isLiked;
   Place({
@@ -14,6 +15,7 @@ class Place {
     required this.longitude,
     required this.country,
     required this.webUrl,
+    required this.category,
     required this.rating,
     this.isLiked = false,
   });
@@ -24,6 +26,7 @@ class Place {
     double? longitude,
     String? country,
     String? webUrl,
+    String? category,
   }) {
     return Place(
       name: name ?? this.name,
@@ -31,6 +34,7 @@ class Place {
       longitude: longitude ?? this.longitude,
       country: country ?? this.country,
       webUrl: webUrl ?? this.webUrl,
+      category: category ?? this.category,
       rating: rating,
     );
   }
@@ -42,6 +46,7 @@ class Place {
       'longitude': longitude,
       'country': country,
       'webUrl': webUrl,
+      'category': category,
       'rating': rating,
     };
   }
@@ -53,6 +58,7 @@ class Place {
       longitude: map['longitude'] as double,
       country: map['country'] as String,
       webUrl: map['webUrl'] as String,
+      category: map['category'] as String,
       rating: map['rating'] as int,
     );
   }
@@ -64,7 +70,7 @@ class Place {
 
   @override
   String toString() {
-    return 'Place(name: $name, latitude: $latitude, longitude: $longitude, country: $country, webUrl: $webUrl, rating: $rating)';
+    return 'Place(name: $name, latitude: $latitude, longitude: $longitude, country: $country, webUrl: $webUrl, category: $category, rating: $rating)';
   }
 
   @override
@@ -76,6 +82,7 @@ class Place {
         other.longitude == longitude &&
         other.country == country &&
         other.rating == rating &&
+        other.category == category &&
         other.webUrl == webUrl;
   }
 
@@ -86,6 +93,7 @@ class Place {
         longitude.hashCode ^
         country.hashCode ^
         rating.hashCode ^
+        category.hashCode ^
         webUrl.hashCode;
   }
 }

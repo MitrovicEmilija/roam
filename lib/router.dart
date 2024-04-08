@@ -28,4 +28,5 @@ final loggedInRoute = RouteMap(routes: {
           uid: routeData.pathParameters['uid']!,
         ),
       ),
+  //'/place/:placeId': (routeData) => MaterialPage(child: child)
 });

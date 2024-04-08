@@ -28,6 +28,16 @@ class HomeRepository {
   CollectionReference get _places =>
       _firestore.collection(FirebaseConstants.placesCollection);
 
+  Stream<List<Place>> getPLaces() {
+    return _places.snapshots().map((event) {
+      List<Place> places = [];
+      for (var doc in event.docs) {
+        places.add(Place.fromMap(doc.data() as Map<String, dynamic>));
+      }
+      return places;
+    });
+  }
+
   FutureVoid storePlaces(List<Place> places) async {
     try {
       for (var place in places) {
@@ -55,8 +65,6 @@ class HomeRepository {
     try {
       final response = await http.get(url);
 
-      print('Request Headers: ${response.headers}');
-
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         final List<Place> places = [];
@@ -77,6 +85,10 @@ class HomeRepository {
             final lon = geometry['coordinates'][0];
             final country = properties['country'];
             final webUrl = properties['website'];
+            final category = properties['categories'] != null &&
+                    properties['categories'].isNotEmpty
+                ? properties['categories'][0]
+                : 'Unknown Category';
 
             // Create a Place object and add it to the places list
             final place = Place(
@@ -85,15 +97,17 @@ class HomeRepository {
               longitude: lon,
               country: country,
               webUrl: webUrl,
+              category: category,
               rating: 2,
               isLiked: false,
             );
             places.add(place);
           }
         }
+        await storePlaces(places);
+        print('SUCCESSFULLY STORED INTO FIRESTORE.');
+
         return places;
-        // Store the fetched places into Firestore
-        //await storePlaces(places);
       } else {
         throw 'Failed to fetch places: ${response.statusCode}';
       }
@@ -101,6 +115,28 @@ class HomeRepository {
       if (kDebugMode) print(e.toString().toUpperCase());
       return [];
     }
+  }
+
+  Stream<List<Place>> searchPlace(String query) {
+    return _places
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(
+                    query.codeUnitAt(query.length - 1) + 1,
+                  ),
+        )
+        .snapshots()
+        .map((event) {
+      List<Place> places = [];
+      for (var place in event.docs) {
+        places.add(Place.fromMap(place.data() as Map<String, dynamic>));
+      }
+      return places;
+    });
   }
 
   FutureVoid storeToPreferences(Place place, String userId) async {
