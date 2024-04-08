@@ -26,13 +26,12 @@ class HomeController extends StateNotifier<List<Place>> {
         _ref = ref,
         super([]); // Initialize with an empty list
 
-  void fetchPlaces(String city) async {
+  void fetchPlacesFromTrail() async {
     try {
       // Set loading state to true
       state = [];
 
-      // Fetch places from repository
-      List<Place> places = await _homeRepository.fetchPlaces(city);
+      List<Place> places = await _homeRepository.fetchPlacesFromTrail();
 
       // Update fetched places
       state = places;
@@ -44,6 +43,7 @@ class HomeController extends StateNotifier<List<Place>> {
       if (kDebugMode) {
         print('Error fetching places: $e');
       }
+      rethrow;
     }
   }
 

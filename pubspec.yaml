@@ -49,6 +49,7 @@ dependencies:
   http: ^0.13.5
   dio: ^5.4.2+1
   amadeus: ^0.0.5
+  any_link_preview: ^3.0.0
 
 dev_dependencies:
   flutter_test:

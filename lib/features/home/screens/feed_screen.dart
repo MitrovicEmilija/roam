@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:any_link_preview/any_link_preview.dart';
 
 import 'package:roam/core/common/star_rating.dart';
 import 'package:roam/features/home/controller/home_controller.dart';
@@ -16,8 +17,8 @@ class FeedScreen extends ConsumerStatefulWidget {
 class _FeedScreenState extends ConsumerState<FeedScreen> {
   final TextEditingController _cityController = TextEditingController();
 
-  void fetchPlaces(WidgetRef ref, String city) {
-    ref.read(homeControllerProvider.notifier).fetchPlaces(city);
+  void fetchPlacesFromTrail(WidgetRef ref) {
+    ref.read(homeControllerProvider.notifier).fetchPlacesFromTrail();
   }
 
   void likePlace(WidgetRef ref, Place place) {
@@ -75,7 +76,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      fetchPlaces(ref, _cityController.text.trim());
+                      fetchPlacesFromTrail(ref);
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -108,6 +109,15 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     child: Column(
                       children: [
                         ListTile(
+                          leading: SizedBox(
+                            width: 100,
+                            height: 70,
+                            child: AnyLinkPreview(
+                              displayDirection:
+                                  UIDirection.uiDirectionHorizontal,
+                              link: place.webUrl,
+                            ),
+                          ),
                           title: Text(
                             place.name,
                             style: const TextStyle(
@@ -142,7 +152,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                 icon: place.isLiked
                                     ? const Icon(Icons.favorite)
                                     : const Icon(Icons.favorite_border),
-                                onPressed: () => likePlace(ref, place),
+                                onPressed: () {},
                               ),
                             ],
                           ),
