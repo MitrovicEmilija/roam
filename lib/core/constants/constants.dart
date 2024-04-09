@@ -1,5 +1,5 @@
 import 'package:roam/features/home/screens/feed_screen.dart';
-import 'package:roam/features/preferences/screens/favourites_screen.dart';
+import 'package:roam/features/community/screens/community_screen.dart';
 import 'package:roam/features/trips/screens/trips_screen.dart';
 
 class Constants {
@@ -12,7 +12,7 @@ class Constants {
 
   static const tabWidgets = [
     FeedScreen(),
-    FavouritesScreen(uid: ''),
+    CommunityScreen(uid: ''),
     TripsScreen(uid: '')
   ];
 }

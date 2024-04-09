@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:roam/features/auth/screens/auth_screen.dart';
-import 'package:roam/features/preferences/screens/favourites_screen.dart';
+import 'package:roam/features/community/screens/community_screen.dart';
 import 'package:roam/features/trips/screens/trips_screen.dart';
 import 'package:roam/features/user_profile/screens/user_profile_screen.dart';
-import 'package:routemaster/routemaster.dart';
-
 import 'package:roam/features/home/screens/home_screen.dart';
+
+import 'package:routemaster/routemaster.dart';
 
 final loggedOutRoute = RouteMap(routes: {
   '/': (_) => const MaterialPage(child: AuthScreen()),
@@ -14,7 +14,7 @@ final loggedOutRoute = RouteMap(routes: {
 final loggedInRoute = RouteMap(routes: {
   '/': (_) => const MaterialPage(child: HomeScreen()),
   '/favourites/:uid': (routeData) => MaterialPage(
-        child: FavouritesScreen(
+        child: CommunityScreen(
           uid: routeData.pathParameters['uid']!,
         ),
       ),

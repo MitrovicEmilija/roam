@@ -68,7 +68,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+            icon: Icon(Icons.group),
             label: '',
           ),
           BottomNavigationBarItem(

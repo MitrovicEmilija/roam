@@ -1,17 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-import 'package:roam/models/place_model.dart';
-import 'package:roam/models/trip_model.dart';
-
 class UserModel {
   final String uid;
   String? email;
   String? username;
   final String profilePic;
   final bool isAuthenticated;
-  final List<Place> preferences;
-  final List<Trip> trips;
+  final List<String> preferences;
+  final List<String> trips;
   UserModel({
     required this.uid,
     required this.profilePic,
@@ -22,14 +19,15 @@ class UserModel {
     this.username,
   });
 
-  UserModel copyWith(
-      {String? uid,
-      String? email,
-      String? username,
-      String? profilePic,
-      bool? isAuthenticated,
-      List<Place>? preferences,
-      List<Trip>? trips}) {
+  UserModel copyWith({
+    String? uid,
+    String? email,
+    String? username,
+    String? profilePic,
+    bool? isAuthenticated,
+    List<String>? preferences,
+    List<String>? trips,
+  }) {
     return UserModel(
         uid: uid ?? this.uid,
         email: email ?? this.email,
@@ -47,8 +45,8 @@ class UserModel {
       'username': username,
       'profilePic': profilePic,
       'isAuthenticated': isAuthenticated,
-      'preferences': preferences.map((x) => x.toMap()).toList(),
-      'trips': trips.map((y) => y.toMap()).toList()
+      'preferences': preferences,
+      'trips': trips,
     };
   }
 
@@ -59,14 +57,8 @@ class UserModel {
       username: map['username'] as String?,
       profilePic: map['profilePic'] as String,
       isAuthenticated: map['isAuthenticated'] as bool,
-      preferences: (map['preferences'] as List<dynamic>?)
-              ?.map<Place>((x) => Place.fromMap(x as Map<String, dynamic>))
-              .toList() ??
-          [],
-      trips: (map['trips'] as List<dynamic>?)
-              ?.map<Trip>((y) => Trip.fromMap(y as Map<String, dynamic>))
-              .toList() ??
-          [],
+      preferences: List<String>.from(map['preferences'] ?? []),
+      trips: List<String>.from(map['trips'] ?? []),
     );
   }
 

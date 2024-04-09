@@ -64,11 +64,20 @@ class HomeController extends StateNotifier<List<Place>> {
     }
   }
 
-  void storeToPreferences(Place place, BuildContext context) async {
+  void storeToPreferences(String placeName, BuildContext context) async {
     final user = _ref.read(userProvider)!;
-    state = []; // Clear the previous state
-    final res = await _homeRepository.storeToPreferences(place, user.uid);
+    state = [];
+    final res = await _homeRepository.storeToPreferences(placeName, user.uid);
     res.fold((l) => showSnackBar(context, l.message),
         (r) => showSnackBar(context, 'Added to favourites.'));
+  }
+
+  void deleteFromPreferences(String placeName, BuildContext context) async {
+    final user = _ref.read(userProvider)!;
+    state = [];
+    final res =
+        await _homeRepository.deleteFromPreferences(placeName, user.uid);
+    res.fold((l) => showSnackBar(context, l.message),
+        (r) => showSnackBar(context, 'Removed from favourites.'));
   }
 }

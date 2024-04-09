@@ -139,12 +139,27 @@ class HomeRepository {
     });
   }
 
-  FutureVoid storeToPreferences(Place place, String userId) async {
+  FutureVoid storeToPreferences(String placeName, String userId) async {
     try {
-      return right(_users.doc(userId).update({
-        'preferences': FieldValue.arrayUnion([place]),
-        'isLiked': true
-      }));
+      await _users.doc(userId).update({
+        'preferences': FieldValue.arrayUnion([placeName])
+      });
+      await _places.doc(placeName).update({'isLiked': true});
+      return right(null);
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureVoid deleteFromPreferences(String placeName, String userId) async {
+    try {
+      await _users.doc(userId).update({
+        'preferences': FieldValue.arrayRemove([placeName])
+      });
+      await _places.doc(placeName).update({'isLiked': false});
+      return right(null);
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {

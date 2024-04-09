@@ -5,7 +5,6 @@ import 'package:roam/core/common/error_text.dart';
 import 'package:roam/core/common/loader.dart';
 
 import 'package:roam/features/home/controller/home_controller.dart';
-import 'package:roam/models/place_model.dart';
 import 'package:roam/theme/pallete.dart';
 
 class FeedScreen extends ConsumerStatefulWidget {
@@ -22,10 +21,16 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   }
   */
 
-  void likePlace(WidgetRef ref, Place place) {
+  void likePlace(WidgetRef ref, String placeName) {
     ref
         .read(homeControllerProvider.notifier)
-        .storeToPreferences(place, context);
+        .storeToPreferences(placeName, context);
+  }
+
+  void dislikePlace(WidgetRef ref, String placeName) {
+    ref
+        .read(homeControllerProvider.notifier)
+        .deleteFromPreferences(placeName, context);
   }
 
   @override
@@ -108,7 +113,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                           const SizedBox(
                                               width: 4), // Adjust spacing here
                                           Text(
-                                            'Country: ${place.country}',
+                                            place.country,
                                             style: const TextStyle(
                                               fontFamily: 'Poppins',
                                               fontSize: 14,
@@ -147,7 +152,13 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                                   ? const Icon(Icons.favorite)
                                                   : const Icon(
                                                       Icons.favorite_border),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                if (place.isLiked) {
+                                                  dislikePlace(ref, place.name);
+                                                } else {
+                                                  likePlace(ref, place.name);
+                                                }
+                                              },
                                             ),
                                           ),
                                           const SizedBox(width: 8),
