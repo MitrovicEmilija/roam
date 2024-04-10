@@ -29,13 +29,14 @@ class UserModel {
     List<String>? trips,
   }) {
     return UserModel(
-        uid: uid ?? this.uid,
-        email: email ?? this.email,
-        username: username ?? this.username,
-        profilePic: profilePic ?? this.profilePic,
-        isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-        preferences: preferences ?? this.preferences,
-        trips: trips ?? this.trips);
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      username: username ?? this.username,
+      profilePic: profilePic ?? this.profilePic,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+      preferences: preferences ?? this.preferences,
+      trips: trips ?? this.trips,
+    );
   }
 
   Map<String, dynamic> toMap() {

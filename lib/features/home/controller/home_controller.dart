@@ -12,6 +12,10 @@ final placesProvider = StreamProvider((ref) {
   return homeController.getPlaces();
 });
 
+final getPlacesByNameProvider = StreamProvider.family((ref, String name) {
+  return ref.watch(homeControllerProvider.notifier).getPlacesByName(name);
+});
+
 final searchPlaceProvider = StreamProvider.family((ref, String query) {
   return ref.watch(homeControllerProvider.notifier).searchPlace(query);
 });
@@ -37,6 +41,10 @@ class HomeController extends StateNotifier<List<Place>> {
 
   Stream<List<Place>> getPlaces() {
     return _homeRepository.getPLaces();
+  }
+
+  Stream<Place> getPlacesByName(String name) {
+    return _homeRepository.getPlacesByName(name);
   }
 
   Stream<List<Place>> searchPlace(String query) {

@@ -39,6 +39,16 @@ class AuthRepository {
         (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
   }
 
+  Stream<List<UserModel>> getUsers() {
+    return _users.snapshots().map((event) {
+      List<UserModel> users = [];
+      for (var doc in event.docs) {
+        users.add(UserModel.fromMap(doc.data() as Map<String, dynamic>));
+      }
+      return users;
+    });
+  }
+
   FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();

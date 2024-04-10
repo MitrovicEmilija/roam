@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-import 'package:roam/models/user_model.dart';
-
 class Trip {
   final String id;
   final String name;
   final DateTime date;
   bool isSolo;
-  List<UserModel> members;
+  List<String> members;
   Trip({
     required this.id,
     required this.name,
@@ -22,7 +20,7 @@ class Trip {
     String? name,
     DateTime? date,
     bool? isSolo,
-    List<UserModel>? members,
+    List<String>? members,
   }) {
     return Trip(
       id: id ?? this.id,
@@ -39,7 +37,7 @@ class Trip {
       'name': name,
       'date': date.millisecondsSinceEpoch,
       'isSolo': isSolo,
-      'members': members.map((x) => x.toMap()).toList(),
+      'members': members,
     };
   }
 
@@ -49,11 +47,7 @@ class Trip {
       name: map['name'] as String,
       date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
       isSolo: map['isSolo'] as bool,
-      members: List<UserModel>.from(
-        (map['members'] as List<int>).map<UserModel>(
-          (x) => UserModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      members: List<String>.from(map['members'] ?? []),
     );
   }
 

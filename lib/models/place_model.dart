@@ -57,14 +57,14 @@ class Place {
 
   factory Place.fromMap(Map<String, dynamic> map) {
     return Place(
-      name: map['name'] as String,
-      latitude: map['latitude'] as double,
-      longitude: map['longitude'] as double,
-      country: map['country'] as String,
-      webUrl: map['webUrl'] as String,
-      category: map['category'] as String,
-      rating: map['rating'] as int,
-      isLiked: map['isLiked'] as bool,
+      name: map['name'] as String? ?? '',
+      latitude: (map['latitude'] as num?)?.toDouble() ?? 0.0,
+      longitude: (map['longitude'] as num?)?.toDouble() ?? 0.0,
+      country: map['country'] as String? ?? '',
+      webUrl: map['webUrl'] as String? ?? '',
+      category: map['category'] as String? ?? '',
+      rating: (map['rating'] as int?) ?? 0,
+      isLiked: (map['isLiked'] as bool?) ?? false,
     );
   }
 

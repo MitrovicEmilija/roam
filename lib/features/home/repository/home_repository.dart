@@ -38,6 +38,18 @@ class HomeRepository {
     });
   }
 
+  Stream<Place> getPlacesByName(String name) {
+    return _places.doc(Uri.decodeComponent(name)).snapshots().map((event) {
+      if (event.exists) {
+        return Place.fromMap(event.data() as Map<String, dynamic>);
+      } else {
+        throw Exception("Document not found for name: $name");
+      }
+    }).handleError((error) {
+      print("Error fetching document: $error");
+    });
+  }
+
   FutureVoid storePlaces(List<Place> places) async {
     try {
       for (var place in places) {

@@ -104,7 +104,10 @@ class UserProfileScreen extends ConsumerWidget {
                   ),
                 ];
               },
-              body: const Text('preferences'),
+              body: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text('Community posts'),
+              ),
             ),
             error: (error, stackTrace) => ErrorText(
               error: error.toString(),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:roam/features/auth/screens/auth_screen.dart';
 import 'package:roam/features/community/screens/community_screen.dart';
+import 'package:roam/features/home/screens/place_details_screen.dart';
+import 'package:roam/features/home/screens/plan_trip_screen.dart';
+import 'package:roam/features/home/screens/trip_friends_screen.dart';
 import 'package:roam/features/trips/screens/trips_screen.dart';
 import 'package:roam/features/user_profile/screens/edit_profile_screen.dart';
 import 'package:roam/features/user_profile/screens/user_profile_screen.dart';
@@ -13,7 +16,9 @@ final loggedOutRoute = RouteMap(routes: {
 });
 
 final loggedInRoute = RouteMap(routes: {
-  '/': (_) => const MaterialPage(child: HomeScreen()),
+  '/': (_) => const MaterialPage(
+        child: HomeScreen(),
+      ),
   '/community/:uid': (routeData) => MaterialPage(
         child: CommunityScreen(
           uid: routeData.pathParameters['uid']!,
@@ -23,6 +28,14 @@ final loggedInRoute = RouteMap(routes: {
         child: TripsScreen(
           uid: routeData.pathParameters['uid']!,
         ),
+      ),
+  '/trip/:name': (routeData) => MaterialPage(
+        child: PlanTripScreen(
+          name: routeData.pathParameters['name']!,
+        ),
+      ),
+  '/trip/friends': (_) => const MaterialPage(
+        child: TripFriendsScreen(),
       ),
   '/u/:uid': (routeData) => MaterialPage(
         child: UserProfileScreen(
@@ -34,5 +47,9 @@ final loggedInRoute = RouteMap(routes: {
           uid: routeData.pathParameters['uid']!,
         ),
       ),
-  //'/place/:placeId': (routeData) => MaterialPage(child: child)
+  '/place-details/:name': (routeData) => MaterialPage(
+        child: PlaceDetailsScreen(
+          name: routeData.pathParameters['name']!,
+        ),
+      ),
 });

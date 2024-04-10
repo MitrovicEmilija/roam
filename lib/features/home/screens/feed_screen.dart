@@ -6,6 +6,7 @@ import 'package:roam/core/common/loader.dart';
 
 import 'package:roam/features/home/controller/home_controller.dart';
 import 'package:roam/theme/pallete.dart';
+import 'package:routemaster/routemaster.dart';
 
 class FeedScreen extends ConsumerStatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -31,6 +32,10 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
     ref
         .read(homeControllerProvider.notifier)
         .deleteFromPreferences(placeName, context);
+  }
+
+  void navigateToPlaceDetails(BuildContext context, String name) {
+    Routemaster.of(context).push('/place-details/$name');
   }
 
   @override
@@ -89,82 +94,90 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0,
                                   ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        place.name,
-                                        style: const TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.location_on,
-                                            color: Pallete.blue,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(
-                                              width: 4), // Adjust spacing here
-                                          Text(
-                                            place.country,
-                                            style: const TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                              color: Pallete.blue,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        decoration: BoxDecoration(
-                                          color: Pallete.lightGreen,
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                        ),
-                                        child: Text(
-                                          place.category,
+                                  child: GestureDetector(
+                                    onTap: () => navigateToPlaceDetails(
+                                      context,
+                                      place.name.trim(),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          place.name,
                                           style: const TextStyle(
-                                            fontFamily: 'Mulish',
-                                            fontSize: 14,
-                                            color: Colors.black,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: IconButton(
-                                              icon: place.isLiked
-                                                  ? const Icon(Icons.favorite)
-                                                  : const Icon(
-                                                      Icons.favorite_border),
-                                              onPressed: () {
-                                                if (place.isLiked) {
-                                                  dislikePlace(ref, place.name);
-                                                } else {
-                                                  likePlace(ref, place.name);
-                                                }
-                                              },
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.location_on,
+                                              color: Pallete.blue,
+                                              size: 20,
+                                            ),
+                                            const SizedBox(
+                                                width:
+                                                    4), // Adjust spacing here
+                                            Text(
+                                              place.country,
+                                              style: const TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 14,
+                                                color: Pallete.blue,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 4),
+                                          decoration: BoxDecoration(
+                                            color: Pallete.lightGreen,
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                          ),
+                                          child: Text(
+                                            place.category,
+                                            style: const TextStyle(
+                                              fontFamily: 'Mulish',
+                                              fontSize: 14,
+                                              color: Colors.black,
                                             ),
                                           ),
-                                          const SizedBox(width: 8),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: IconButton(
+                                                icon: place.isLiked
+                                                    ? const Icon(Icons.favorite)
+                                                    : const Icon(
+                                                        Icons.favorite_border),
+                                                onPressed: () {
+                                                  if (place.isLiked) {
+                                                    dislikePlace(
+                                                        ref, place.name);
+                                                  } else {
+                                                    likePlace(ref, place.name);
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
