@@ -178,4 +178,16 @@ class HomeRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  FutureVoid ratePlace(int rating, String placeName) async {
+    try {
+      return right(await _places
+          .doc(Uri.decodeComponent(placeName))
+          .update({'rating': rating}));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
 }

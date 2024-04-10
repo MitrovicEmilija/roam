@@ -18,6 +18,10 @@ class PlaceDetailsScreen extends ConsumerWidget {
     Routemaster.of(context).push('/trip/$name');
   }
 
+  void onRatingChanged(int rating, WidgetRef ref, BuildContext context) {
+    ref.read(homeControllerProvider.notifier).ratePlace(rating, name, context);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -124,8 +128,10 @@ class PlaceDetailsScreen extends ConsumerWidget {
                       ),
                     ),
                     StarRating(
-                      rating: 2,
-                      onRatingChanged: (value) {},
+                      rating: place.rating,
+                      onRatingChanged: (rating) {
+                        onRatingChanged(rating, ref, context);
+                      },
                     ),
                     const SizedBox(
                       height: 60,
