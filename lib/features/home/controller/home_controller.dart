@@ -91,7 +91,8 @@ class HomeController extends StateNotifier<List<Place>> {
 
   void ratePlace(int rating, String placeName, BuildContext context) async {
     final res = await _homeRepository.ratePlace(rating, placeName);
-    res.fold((l) => showSnackBar(context, l.message),
-        (r) => showSnackBar(context, 'Place rated.'));
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      showSnackBar(context, 'Place rated');
+    });
   }
 }

@@ -28,6 +28,9 @@ class HomeRepository {
   CollectionReference get _places =>
       _firestore.collection(FirebaseConstants.placesCollection);
 
+  CollectionReference get _ratings =>
+      _firestore.collection(FirebaseConstants.ratingCollection);
+
   Stream<List<Place>> getPLaces() {
     return _places.snapshots().map((event) {
       List<Place> places = [];
@@ -110,7 +113,7 @@ class HomeRepository {
               country: country,
               webUrl: webUrl,
               category: category,
-              rating: 2,
+              rating: [],
               isLiked: false,
             );
             places.add(place);
@@ -181,9 +184,9 @@ class HomeRepository {
 
   FutureVoid ratePlace(int rating, String placeName) async {
     try {
-      return right(await _places
-          .doc(Uri.decodeComponent(placeName))
-          .update({'rating': rating}));
+      return right(await _places.doc(Uri.decodeComponent(placeName)).update({
+        'rating': FieldValue.arrayUnion([rating])
+      }));
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {

@@ -7,7 +7,7 @@ class Place {
   final String country;
   final String webUrl;
   final String category;
-  final int rating;
+  final List<int> rating;
   bool isLiked;
   Place({
     required this.name,
@@ -27,7 +27,7 @@ class Place {
     String? country,
     String? webUrl,
     String? category,
-    int? rating,
+    List<int>? rating,
     bool? isLiked,
   }) {
     return Place(
@@ -63,7 +63,7 @@ class Place {
       country: map['country'] as String? ?? '',
       webUrl: map['webUrl'] as String? ?? '',
       category: map['category'] as String? ?? '',
-      rating: (map['rating'] as int?) ?? 0,
+      rating: List<int>.from(map['rating'] ?? []),
       isLiked: (map['isLiked'] as bool?) ?? false,
     );
   }

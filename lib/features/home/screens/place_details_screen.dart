@@ -128,7 +128,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                       ),
                     ),
                     StarRating(
-                      rating: place.rating,
+                      ratings: place.rating,
                       onRatingChanged: (rating) {
                         onRatingChanged(rating, ref, context);
                       },
