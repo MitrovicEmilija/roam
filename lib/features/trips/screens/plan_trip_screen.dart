@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
+import 'package:roam/features/trips/controller/trip_controller.dart';
 import 'package:roam/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -14,9 +16,15 @@ class PlanTripScreen extends ConsumerStatefulWidget {
 }
 
 class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
-  String? tripName;
-  late DateTime selectedDate;
-  String tripType = 'Solo';
+  final tripNameController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  bool isSolo = true;
+
+  @override
+  void dispose() {
+    super.dispose();
+    tripNameController.dispose();
+  }
 
   @override
   void initState() {
@@ -24,11 +32,17 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
     selectedDate = DateTime.now();
   }
 
-  void navigateToFriendsScreen(BuildContext context) {
-    Routemaster.of(context).push('/trip/friends');
+  void planTrip() {
+    ref.read(tripControllerProvider.notifier).createTrip(
+          tripNameController.text.trim(),
+          Uri.decodeComponent(widget.name),
+          selectedDate,
+          isSolo,
+          context,
+        );
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -59,6 +73,7 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
+              controller: tripNameController,
               decoration: const InputDecoration(
                 labelText: 'Trip Name',
                 labelStyle: TextStyle(
@@ -66,17 +81,12 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
                   fontSize: 15,
                 ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  tripName = value;
-                });
-              },
             ),
             const SizedBox(height: 20),
             Row(
               children: [
                 Text(
-                  'Date: ${selectedDate.toLocal()}'.split(' ')[0],
+                  'Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}',
                   style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 15,
@@ -85,7 +95,7 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
                 ),
                 const SizedBox(width: 20),
                 OutlinedButton(
-                  onPressed: () => _selectDate(context),
+                  onPressed: () => selectDate(context),
                   child: const Text(
                     'Select Date',
                     style: TextStyle(
@@ -99,66 +109,12 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
               ],
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
-                  'Type: ',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 15,
-                    color: Pallete.greyText,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      tripType = 'Solo';
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        tripType == 'Solo' ? Pallete.greyField : null,
-                  ),
-                  child: const Text(
-                    'Solo',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: Pallete.greyText,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    navigateToFriendsScreen(context);
-                    setState(() {
-                      tripType = 'With Friends';
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Pallete.blue,
-                  ),
-                  child: const Text(
-                    'With Friends',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Pallete.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () => planTrip(),
           child: const Text(
             'Plan my Trip',
             style: TextStyle(

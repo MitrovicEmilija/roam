@@ -28,9 +28,6 @@ class HomeRepository {
   CollectionReference get _places =>
       _firestore.collection(FirebaseConstants.placesCollection);
 
-  CollectionReference get _ratings =>
-      _firestore.collection(FirebaseConstants.ratingCollection);
-
   Stream<List<Place>> getPLaces() {
     return _places.snapshots().map((event) {
       List<Place> places = [];

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:roam/features/auth/screens/auth_screen.dart';
 import 'package:roam/features/community/screens/community_screen.dart';
 import 'package:roam/features/home/screens/place_details_screen.dart';
-import 'package:roam/features/home/screens/plan_trip_screen.dart';
-import 'package:roam/features/home/screens/trip_friends_screen.dart';
+import 'package:roam/features/trips/screens/plan_trip_screen.dart';
+import 'package:roam/features/trips/screens/trip_friends_screen.dart';
 import 'package:roam/features/trips/screens/trips_screen.dart';
 import 'package:roam/features/user_profile/screens/edit_profile_screen.dart';
 import 'package:roam/features/user_profile/screens/user_profile_screen.dart';
@@ -34,8 +35,9 @@ final loggedInRoute = RouteMap(routes: {
           name: routeData.pathParameters['name']!,
         ),
       ),
-  '/trip/friends': (_) => const MaterialPage(
-        child: TripFriendsScreen(),
+  '/trip/friends/:tripName': (routeData) => MaterialPage(
+        child:
+            TripFriendsScreen(tripName: routeData.pathParameters['tripName']!),
       ),
   '/u/:uid': (routeData) => MaterialPage(
         child: UserProfileScreen(
