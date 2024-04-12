@@ -8,6 +8,11 @@ import 'package:roam/features/trips/repository/trip_repository.dart';
 import 'package:roam/models/trip_model.dart';
 import 'package:routemaster/routemaster.dart';
 
+final tripsProvider = StreamProvider((ref) {
+  final tripController = ref.watch(tripControllerProvider.notifier);
+  return tripController.getTrips();
+});
+
 final tripControllerProvider =
     StateNotifierProvider<TripController, List<Trip>>((ref) {
   final tripRepository = ref.watch(tripRepositoryProvider);
@@ -27,10 +32,15 @@ class TripController extends StateNotifier<List<Trip>> {
         _ref = ref,
         super([]);
 
+  Stream<List<Trip>> getTrips() {
+    return _tripRepository.getTrips();
+  }
+
   void createTrip(
     String name,
     String placeName,
-    DateTime date,
+    DateTime dateFrom,
+    DateTime dateTo,
     bool isSolo,
     BuildContext context,
   ) async {
@@ -40,7 +50,8 @@ class TripController extends StateNotifier<List<Trip>> {
       id: name,
       placeName: placeName,
       name: name,
-      date: date,
+      dateFrom: dateFrom,
+      dateTo: dateTo,
       isSolo: isSolo,
       members: [uid],
     );
@@ -64,7 +75,7 @@ class TripController extends StateNotifier<List<Trip>> {
       }
       await _tripRepository.addFriends(tripName, members);
 
-      showSnackBar(context, 'Friends selected and trip is created.');
+      showSnackBar(context, 'Friends selected.');
     } catch (e) {
       showSnackBar(context, 'Error: $e');
     }

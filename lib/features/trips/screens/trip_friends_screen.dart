@@ -47,7 +47,6 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
         ),
         TextButton(
           onPressed: () {
-            addFriends(context);
             Routemaster.of(context).pop();
           },
           child: const Text(

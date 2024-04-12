@@ -35,6 +35,16 @@ class TripRepository {
     }
   }
 
+  Stream<List<Trip>> getTrips() {
+    return _trips.snapshots().map((event) {
+      List<Trip> trips = [];
+      for (var doc in event.docs) {
+        trips.add(Trip.fromMap(doc.data() as Map<String, dynamic>));
+      }
+      return trips;
+    });
+  }
+
   Future<void> addFriends(String tripName, List<String> userIds) async {
     try {
       var tripDoc = await _trips.doc(tripName).get();

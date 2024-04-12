@@ -17,7 +17,8 @@ class PlanTripScreen extends ConsumerStatefulWidget {
 
 class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
   final tripNameController = TextEditingController();
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedFromDate = DateTime.now();
+  DateTime selectedToDate = DateTime.now();
   bool isSolo = true;
 
   @override
@@ -29,29 +30,45 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
   @override
   void initState() {
     super.initState();
-    selectedDate = DateTime.now();
+    selectedFromDate = DateTime.now();
+    selectedToDate = DateTime.now();
   }
 
   void planTrip() {
     ref.read(tripControllerProvider.notifier).createTrip(
           tripNameController.text.trim(),
           Uri.decodeComponent(widget.name),
-          selectedDate,
+          selectedFromDate,
+          selectedToDate,
           isSolo,
           context,
         );
   }
 
-  Future<void> selectDate(BuildContext context) async {
+  Future<void> selectFromDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: selectedFromDate,
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != selectedFromDate) {
       setState(() {
-        selectedDate = picked;
+        selectedFromDate = picked;
+      });
+    }
+  }
+
+  Future<void> selectToDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedFromDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedToDate) {
+      setState(() {
+        selectedToDate = picked;
       });
     }
   }
@@ -85,17 +102,25 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
             const SizedBox(height: 20),
             Row(
               children: [
-                Text(
-                  'Date: ${DateFormat('yyyy-MM-dd').format(selectedDate)}',
-                  style: const TextStyle(
+                const Text(
+                  'From: ',
+                  style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 15,
                     color: Pallete.greyText,
                   ),
                 ),
+                Text(
+                  DateFormat('yyyy-MM-dd').format(selectedFromDate),
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 15,
+                    color: Pallete.yellow,
+                  ),
+                ),
                 const SizedBox(width: 20),
                 OutlinedButton(
-                  onPressed: () => selectDate(context),
+                  onPressed: () => selectFromDate(context),
                   child: const Text(
                     'Select Date',
                     style: TextStyle(
@@ -109,6 +134,39 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
               ],
             ),
             const SizedBox(height: 20),
+            Row(
+              children: [
+                const Text(
+                  'To: ',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 15,
+                    color: Pallete.greyText,
+                  ),
+                ),
+                Text(
+                  DateFormat('yyyy-MM-dd').format(selectedToDate),
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 15,
+                    color: Pallete.yellow,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                OutlinedButton(
+                  onPressed: () => selectToDate(context),
+                  child: const Text(
+                    'Select Date',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Pallete.green,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

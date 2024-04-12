@@ -5,14 +5,16 @@ class Trip {
   final String id;
   final String placeName;
   final String name;
-  final DateTime date;
+  final DateTime dateFrom;
+  final DateTime dateTo;
   bool isSolo;
   List<String> members;
   Trip({
     required this.id,
     required this.placeName,
     required this.name,
-    required this.date,
+    required this.dateFrom,
+    required this.dateTo,
     required this.isSolo,
     required this.members,
   });
@@ -21,7 +23,8 @@ class Trip {
     String? id,
     String? name,
     String? placeName,
-    DateTime? date,
+    DateTime? dateFrom,
+    DateTime? dateTo,
     bool? isSolo,
     List<String>? members,
   }) {
@@ -29,7 +32,8 @@ class Trip {
       id: id ?? this.id,
       name: name ?? this.name,
       placeName: placeName ?? this.placeName,
-      date: date ?? this.date,
+      dateFrom: dateFrom ?? this.dateFrom,
+      dateTo: dateTo ?? this.dateTo,
       isSolo: isSolo ?? this.isSolo,
       members: members ?? this.members,
     );
@@ -40,7 +44,8 @@ class Trip {
       'id': id,
       'name': name,
       'placeName': placeName,
-      'date': date.millisecondsSinceEpoch,
+      'dateFrom': dateFrom.millisecondsSinceEpoch,
+      'dateTo': dateTo.millisecondsSinceEpoch,
       'isSolo': isSolo,
       'members': members,
     };
@@ -51,7 +56,8 @@ class Trip {
       id: map['id'] as String,
       name: map['name'] as String,
       placeName: map['placeName'] as String,
-      date: DateTime.fromMillisecondsSinceEpoch(map['date'] as int),
+      dateFrom: DateTime.fromMillisecondsSinceEpoch(map['dateFrom'] as int),
+      dateTo: DateTime.fromMillisecondsSinceEpoch(map['dateTo'] as int),
       isSolo: map['isSolo'] as bool,
       members: List<String>.from(map['members'] ?? []),
     );
@@ -64,7 +70,7 @@ class Trip {
 
   @override
   String toString() {
-    return 'Trip(id: $id, name: $name, placeName: $placeName, date: $date, isSolo: $isSolo, members: $members)';
+    return 'Trip(id: $id, name: $name, placeName: $placeName, dateFrom: $dateFrom, dateTo: $dateTo,  isSolo: $isSolo, members: $members)';
   }
 
   @override
@@ -74,7 +80,8 @@ class Trip {
     return other.id == id &&
         other.name == name &&
         other.placeName == placeName &&
-        other.date == date &&
+        other.dateFrom == dateFrom &&
+        other.dateTo == dateTo &&
         other.isSolo == isSolo &&
         listEquals(other.members, members);
   }
@@ -84,7 +91,8 @@ class Trip {
     return id.hashCode ^
         name.hashCode ^
         placeName.hashCode ^
-        date.hashCode ^
+        dateFrom.hashCode ^
+        dateTo.hashCode ^
         isSolo.hashCode ^
         members.hashCode;
   }
