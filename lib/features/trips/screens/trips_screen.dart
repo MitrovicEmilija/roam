@@ -24,83 +24,67 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0).copyWith(left: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'My trips',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Pallete.lightGreen,
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0).copyWith(left: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'My trips',
+              style: TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Pallete.lightGreen,
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 500,
-                child: ref.watch(tripsProvider).when(
-                    data: (fetchedTrips) => (ListView.builder(
-                          itemCount: fetchedTrips.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final trip = fetchedTrips[index];
-                            return Card(
-                              elevation: 4.0,
-                              margin:
-                                  const EdgeInsets.only(bottom: 20, right: 10),
-                              child: Stack(
-                                children: [
-                                  Positioned.fill(
-                                    child: Container(
-                                      color: Pallete.lightBlue,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                    ),
+            ),
+            const SizedBox(
+              height: 20,
+            ), // Add space between "My trips" text and ListView
+            Expanded(
+              // Use Expanded to allow the ListView to take up remaining space
+              child: ref.watch(tripsProvider).when(
+                    data: (fetchedTrips) => ListView.builder(
+                      shrinkWrap:
+                          true, // Allow the ListView to scroll within the SingleChildScrollView
+                      itemCount: fetchedTrips.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final trip = fetchedTrips[index];
+                        return Card(
+                          elevation: 5.0,
+                          margin: const EdgeInsets.only(bottom: 20, right: 10),
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  trip.name,
+                                  style: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
-                                  Positioned(
-                                    top: 10,
-                                    left: 10,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Text(
-                                        trip.name,
-                                        style: const TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ), // Add space between trip name and date
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${DateFormat('d MMM').format(trip.dateFrom)} - ${DateFormat('d MMM').format(trip.dateTo)}',
+                                      style: const TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 16,
+                                        color: Pallete.yellow,
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 50, 20, 20),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '${DateFormat('d MMM').format(trip.dateFrom)} - ${DateFormat('d MMM').format(trip.dateTo)}',
-                                          style: const TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 16,
-                                            color: Pallete.yellow,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 10,
-                                    right: 10,
-                                    child: Row(
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
                                           icon: const Icon(Icons.person_add),
@@ -121,44 +105,44 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Positioned(
-                                    bottom: 5,
-                                    right: 10,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const Icon(
-                                          Icons.location_on,
-                                          color: Pallete.blue,
-                                          size: 16,
-                                        ),
-                                        Text(
-                                          trip.placeName,
-                                          style: const TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 14,
-                                            color: Pallete.blue,
-                                          ),
-                                        ),
-                                      ],
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ), // Add space between date and place name
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      color: Pallete.blue,
+                                      size: 16,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        )),
+                                    Expanded(
+                                      child: Text(
+                                        trip.placeName,
+                                        style: const TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 14,
+                                          color: Pallete.blue,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                     error: (error, stackTrace) =>
                         ErrorText(error: error.toString()),
-                    loading: () => const Loader()),
-              )
-            ],
-          ),
+                    loading: () => const Loader(),
+                  ),
+            ),
+          ],
         ),
       ),
     );

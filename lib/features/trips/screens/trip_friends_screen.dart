@@ -20,10 +20,10 @@ class TripFriendsScreen extends ConsumerStatefulWidget {
 class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
   final List<String> selectedUserIds = [];
 
-  void addFriends(BuildContext context) {
+  void addFriends(BuildContext context, List<String> userIds, String tripName) {
     ref
         .read(tripControllerProvider.notifier)
-        .addFriends(widget.tripName, selectedUserIds, context);
+        .addFriends(Uri.decodeComponent(widget.tripName), userIds, context);
   }
 
   @override
@@ -32,8 +32,11 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
       actions: [
         TextButton(
           onPressed: () {
-            // Handle saving selected users
-            Routemaster.of(context).pop();
+            addFriends(
+              context,
+              selectedUserIds,
+              Uri.decodeComponent(widget.tripName),
+            );
           },
           child: const Text(
             'Save',

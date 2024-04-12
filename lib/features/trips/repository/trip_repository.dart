@@ -45,21 +45,17 @@ class TripRepository {
     });
   }
 
-  Future<void> addFriends(String tripName, List<String> userIds) async {
+  FutureVoid addFriends(String tripName, List<String> userIds) async {
     try {
-      var tripDoc = await _trips.doc(tripName).get();
-      if (!tripDoc.exists) {
-        throw 'The trip does not exist.';
-      }
-
       for (final userId in userIds) {
-        await _trips.doc(tripName).update({
+        await _trips.doc(Uri.decodeComponent(tripName)).update({
           'members': FieldValue.arrayUnion([userId])
         });
       }
       await _trips.doc(tripName).update({'isSolo': false});
+      return right(null);
     } catch (e) {
-      throw Failure('Failed to update trip with friends: $e');
+      return left(Failure(e.toString()));
     }
   }
 }

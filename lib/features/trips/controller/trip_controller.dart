@@ -65,19 +65,14 @@ class TripController extends StateNotifier<List<Trip>> {
   }
 
   void addFriends(
-      String tripName, List<String> selectedUsers, BuildContext context) async {
-    try {
-      final List<String> members = [...selectedUsers];
-      final userId = _ref.read(userProvider)?.uid;
-
-      if (userId != null && !members.contains(userId)) {
-        members.add(userId);
-      }
-      await _tripRepository.addFriends(tripName, members);
-
-      showSnackBar(context, 'Friends selected.');
-    } catch (e) {
-      showSnackBar(context, 'Error: $e');
-    }
+    String tripName,
+    List<String> selectedUsers,
+    BuildContext context,
+  ) async {
+    final res = await _tripRepository.addFriends(tripName, selectedUsers);
+    res.fold((l) => showSnackBar(context, l.message), (r) {
+      showSnackBar(context, 'Friends added.');
+      Routemaster.of(context).pop();
+    });
   }
 }
