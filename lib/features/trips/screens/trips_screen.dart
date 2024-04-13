@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:roam/core/common/error_text.dart';
 import 'package:roam/core/common/loader.dart';
 import 'package:roam/features/trips/controller/trip_controller.dart';
+import 'package:roam/models/trip_model.dart';
 
 import 'package:roam/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
@@ -19,6 +20,10 @@ class TripsScreen extends ConsumerStatefulWidget {
 class _TripsScreenState extends ConsumerState<TripsScreen> {
   void navigateToFriendsScreen(BuildContext context, String tripName) {
     Routemaster.of(context).push('/trip/friends/$tripName');
+  }
+
+  void deleteTrip(WidgetRef ref, BuildContext context, Trip trip) {
+    ref.read(tripControllerProvider.notifier).deleteTrip(trip, context);
   }
 
   @override
@@ -40,103 +45,104 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
             ),
             const SizedBox(
               height: 20,
-            ), // Add space between "My trips" text and ListView
+            ),
             Expanded(
-              // Use Expanded to allow the ListView to take up remaining space
-              child: ref.watch(tripsProvider).when(
-                    data: (fetchedTrips) => ListView.builder(
-                      shrinkWrap:
-                          true, // Allow the ListView to scroll within the SingleChildScrollView
-                      itemCount: fetchedTrips.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final trip = fetchedTrips[index];
-                        return Card(
-                          elevation: 5.0,
-                          margin: const EdgeInsets.only(bottom: 20, right: 10),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  trip.name,
-                                  style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
+              child: ref.watch(userTripsProvider).when(
+                    data: (fetchedTrips) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: fetchedTrips.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final trip = fetchedTrips[index];
+                          return Card(
+                            elevation: 5.0,
+                            margin:
+                                const EdgeInsets.only(bottom: 20, right: 10),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    trip.name,
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ), // Add space between trip name and date
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '${DateFormat('d MMM').format(trip.dateFrom)} - ${DateFormat('d MMM').format(trip.dateTo)}',
-                                      style: const TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 16,
-                                        color: Pallete.yellow,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.person_add),
-                                          onPressed: () {
-                                            navigateToFriendsScreen(
-                                                context, trip.name);
-                                          },
-                                          color: Pallete.blue,
-                                          iconSize: 24,
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          onPressed: () {
-                                            // Delete trip logic
-                                          },
-                                          color: Pallete.lightGreen,
-                                          iconSize: 24,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ), // Add space between date and place name
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const Icon(
-                                      Icons.location_on,
-                                      color: Pallete.blue,
-                                      size: 16,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        trip.placeName,
+                                  const SizedBox(
+                                    height: 10,
+                                  ), // Add space between trip name and date
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${DateFormat('d MMM').format(trip.dateFrom)} - ${DateFormat('d MMM').format(trip.dateTo)}',
                                         style: const TextStyle(
                                           fontFamily: 'Poppins',
-                                          fontSize: 14,
-                                          color: Pallete.blue,
+                                          fontSize: 16,
+                                          color: Pallete.yellow,
                                         ),
-                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.person_add),
+                                            onPressed: () {
+                                              navigateToFriendsScreen(
+                                                  context, trip.name);
+                                            },
+                                            color: Pallete.blue,
+                                            iconSize: 24,
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              deleteTrip(ref, context, trip);
+                                            },
+                                            color: Pallete.lightGreen,
+                                            iconSize: 24,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ), // Add space between date and place name
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      const Icon(
+                                        Icons.location_on,
+                                        color: Pallete.blue,
+                                        size: 16,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          trip.placeName,
+                                          style: const TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 14,
+                                            color: Pallete.blue,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+                    },
                     error: (error, stackTrace) =>
                         ErrorText(error: error.toString()),
                     loading: () => const Loader(),

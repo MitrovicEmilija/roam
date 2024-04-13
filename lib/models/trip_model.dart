@@ -8,6 +8,7 @@ class Trip {
   final DateTime dateFrom;
   final DateTime dateTo;
   bool isSolo;
+  final String creatorUid;
   List<String> members;
   Trip({
     required this.id,
@@ -16,6 +17,7 @@ class Trip {
     required this.dateFrom,
     required this.dateTo,
     required this.isSolo,
+    required this.creatorUid,
     required this.members,
   });
 
@@ -26,6 +28,7 @@ class Trip {
     DateTime? dateFrom,
     DateTime? dateTo,
     bool? isSolo,
+    String? creatorUid,
     List<String>? members,
   }) {
     return Trip(
@@ -35,6 +38,7 @@ class Trip {
       dateFrom: dateFrom ?? this.dateFrom,
       dateTo: dateTo ?? this.dateTo,
       isSolo: isSolo ?? this.isSolo,
+      creatorUid: creatorUid ?? this.creatorUid,
       members: members ?? this.members,
     );
   }
@@ -47,6 +51,7 @@ class Trip {
       'dateFrom': dateFrom.millisecondsSinceEpoch,
       'dateTo': dateTo.millisecondsSinceEpoch,
       'isSolo': isSolo,
+      'creatorUid': creatorUid,
       'members': members,
     };
   }
@@ -59,6 +64,7 @@ class Trip {
       dateFrom: DateTime.fromMillisecondsSinceEpoch(map['dateFrom'] as int),
       dateTo: DateTime.fromMillisecondsSinceEpoch(map['dateTo'] as int),
       isSolo: map['isSolo'] as bool,
+      creatorUid: map['creatorUid'] as String,
       members: List<String>.from(map['members'] ?? []),
     );
   }
@@ -70,7 +76,7 @@ class Trip {
 
   @override
   String toString() {
-    return 'Trip(id: $id, name: $name, placeName: $placeName, dateFrom: $dateFrom, dateTo: $dateTo,  isSolo: $isSolo, members: $members)';
+    return 'Trip(id: $id, name: $name, placeName: $placeName, dateFrom: $dateFrom, dateTo: $dateTo,  isSolo: $isSolo, creatorUid: $creatorUid, members: $members)';
   }
 
   @override
@@ -83,6 +89,7 @@ class Trip {
         other.dateFrom == dateFrom &&
         other.dateTo == dateTo &&
         other.isSolo == isSolo &&
+        other.creatorUid == creatorUid &&
         listEquals(other.members, members);
   }
 
@@ -94,6 +101,7 @@ class Trip {
         dateFrom.hashCode ^
         dateTo.hashCode ^
         isSolo.hashCode ^
+        creatorUid.hashCode ^
         members.hashCode;
   }
 }

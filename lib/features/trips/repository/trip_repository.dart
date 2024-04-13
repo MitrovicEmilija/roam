@@ -35,11 +35,25 @@ class TripRepository {
     }
   }
 
-  Stream<List<Trip>> getTrips() {
-    return _trips.snapshots().map((event) {
+  FutureVoid deleteTrip(Trip trip) async {
+    try {
+      return right(_trips.doc(Uri.decodeComponent(trip.name)).delete());
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  Stream<List<Trip>> getUserTrips(String uid) {
+    return _trips.where('members', arrayContains: uid).snapshots().map((event) {
       List<Trip> trips = [];
       for (var doc in event.docs) {
-        trips.add(Trip.fromMap(doc.data() as Map<String, dynamic>));
+        final data = doc.data() as Map<String, dynamic>;
+        // Check if the user is both a creator and a member
+        if (data['creatorUid'] == uid && data['members'].contains(uid)) {
+          trips.add(Trip.fromMap(data));
+        }
       }
       return trips;
     });

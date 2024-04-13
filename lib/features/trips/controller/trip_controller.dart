@@ -8,9 +8,9 @@ import 'package:roam/features/trips/repository/trip_repository.dart';
 import 'package:roam/models/trip_model.dart';
 import 'package:routemaster/routemaster.dart';
 
-final tripsProvider = StreamProvider((ref) {
+final userTripsProvider = StreamProvider((ref) {
   final tripController = ref.watch(tripControllerProvider.notifier);
-  return tripController.getTrips();
+  return tripController.getUserTrips();
 });
 
 final tripControllerProvider =
@@ -32,8 +32,9 @@ class TripController extends StateNotifier<List<Trip>> {
         _ref = ref,
         super([]);
 
-  Stream<List<Trip>> getTrips() {
-    return _tripRepository.getTrips();
+  Stream<List<Trip>> getUserTrips() {
+    final uid = _ref.read(userProvider)!.uid;
+    return _tripRepository.getUserTrips(uid);
   }
 
   void createTrip(
@@ -53,6 +54,7 @@ class TripController extends StateNotifier<List<Trip>> {
       dateFrom: dateFrom,
       dateTo: dateTo,
       isSolo: isSolo,
+      creatorUid: uid,
       members: [uid],
     );
 
@@ -62,6 +64,12 @@ class TripController extends StateNotifier<List<Trip>> {
       showSnackBar(context, 'Trip created successfully');
       Routemaster.of(context).pop();
     });
+  }
+
+  void deleteTrip(Trip trip, BuildContext context) async {
+    final res = await _tripRepository.deleteTrip(trip);
+    res.fold(
+        (l) => null, (r) => showSnackBar(context, 'Trip deleted successfuly.'));
   }
 
   void addFriends(
