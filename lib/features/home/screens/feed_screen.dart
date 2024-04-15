@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:any_link_preview/any_link_preview.dart';
+
 import 'package:roam/core/common/error_text.dart';
 import 'package:roam/core/common/loader.dart';
-
 import 'package:roam/features/home/controller/home_controller.dart';
+import 'package:roam/features/home/delegates/search_place_delegate.dart';
 import 'package:roam/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -45,19 +46,40 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
         padding: const EdgeInsets.all(18),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Travel the world in grand style',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 27,
-                    color: Pallete.lightGreen,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Travel the world in grand style',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 27,
+                        color: Pallete.lightGreen,
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Pallete.lightGreen,
+                    ),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                        color: Pallete.white,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        showSearch(
+                            context: context,
+                            delegate: SearchPlaceDelegate(ref));
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(

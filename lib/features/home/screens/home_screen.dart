@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:roam/core/constants/constants.dart';
 import 'package:roam/features/auth/controller/auth_controller.dart';
-import 'package:roam/features/home/delegates/search_place_delegate.dart';
 import 'package:roam/features/home/screens/profile_drawer.dart';
 import 'package:roam/theme/pallete.dart';
 
@@ -36,15 +35,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-              showSearch(context: context, delegate: SearchPlaceDelegate(ref));
-            },
-            icon: const Icon(Icons.search),
-          ),
-          IconButton(
             onPressed: () {},
             icon: const Icon(
               Icons.notifications,
+              color: Pallete.lightGreen,
+              size: 25,
             ),
           ),
           Builder(builder: (context) {
@@ -73,6 +68,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.luggage),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.post_add),
             label: '',
           ),
         ],

@@ -26,9 +26,7 @@ class SearchPlaceDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return const SizedBox(
-      width: 48.0,
-    );
+    return null;
   }
 
   @override

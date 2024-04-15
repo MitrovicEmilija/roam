@@ -49,7 +49,10 @@ class ProfileDrawer extends ConsumerWidget {
             const Divider(),
             ListTile(
               title: const Text('My Profile'),
-              leading: const Icon(Icons.person),
+              leading: const Icon(
+                Icons.person,
+                color: Pallete.blue,
+              ),
               onTap: () => navigateToUserProfile(context, user.uid),
             ),
             ListTile(
@@ -62,6 +65,7 @@ class ProfileDrawer extends ConsumerWidget {
             ),
             Switch.adaptive(
               value: true,
+              activeColor: Pallete.lightGreen,
               onChanged: (bool value) {},
             ),
           ],

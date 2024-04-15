@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:roam/core/common/error_text.dart';
 import 'package:roam/core/common/loader.dart';
 import 'package:roam/features/auth/controller/auth_controller.dart';
+import 'package:roam/features/community/controller/community_controller.dart';
+import 'package:roam/models/community_model.dart';
 import 'package:roam/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -12,6 +15,10 @@ class UserProfileScreen extends ConsumerWidget {
 
   void navigateToEditProfileScreen(BuildContext context) {
     Routemaster.of(context).push('/edit-profile/$uid');
+  }
+
+  void navigateToCommunity(BuildContext context, Community community) {
+    Routemaster.of(context).push('/travel-community/${community.name}');
   }
 
   @override
@@ -104,10 +111,32 @@ class UserProfileScreen extends ConsumerWidget {
                   ),
                 ];
               },
-              body: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text('Community posts'),
-              ),
+              body: ref.watch(userCommunityProvider).when(
+                  data: (communities) => ListView.builder(
+                        itemCount: communities.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final community = communities[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(community.avatar),
+                            ),
+                            title: Text(
+                              community.name,
+                              style: const TextStyle(
+                                fontFamily: 'Mulish',
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            onTap: () {
+                              navigateToCommunity(context, community);
+                            },
+                          );
+                        },
+                      ),
+                  error: (error, stackTrace) =>
+                      ErrorText(error: error.toString()),
+                  loading: () => const Loader()),
             ),
             error: (error, stackTrace) => ErrorText(
               error: error.toString(),
