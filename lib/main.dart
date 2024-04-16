@@ -13,6 +13,8 @@ import 'package:roam/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 import 'firebase_options.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -46,7 +48,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         data: (data) => MaterialApp.router(
               debugShowCheckedModeBanner: false,
               title: 'Roam',
-              theme: Pallete.lightModeAppTheme,
+              theme: ref.watch(themeNotifierProvider),
               routerDelegate: RoutemasterDelegate(routesBuilder: (context) {
                 if (data != null) {
                   getData(ref, data);

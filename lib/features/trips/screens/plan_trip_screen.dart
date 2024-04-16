@@ -75,13 +75,16 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return AlertDialog(
+      backgroundColor: currentTheme.scaffoldBackgroundColor,
       title: const Text(
         'Plan Your Trip',
         style: TextStyle(
           fontFamily: 'Poppins',
           fontSize: 18,
-          color: Pallete.green,
+          color: Colors.green,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -127,7 +130,7 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: Pallete.green,
+                      color: Colors.green,
                     ),
                   ),
                 ),
@@ -161,7 +164,7 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: Pallete.green,
+                      color: Colors.green,
                     ),
                   ),
                 ),
@@ -179,7 +182,7 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 15,
-              color: Pallete.blue,
+              color: Colors.blueGrey,
             ),
           ),
         ),
@@ -193,7 +196,7 @@ class _PlanTripScreenState extends ConsumerState<PlanTripScreen> {
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 15,
-              color: Pallete.greyText,
+              color: Pallete.yellow,
             ),
           ),
         ),

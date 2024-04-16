@@ -7,6 +7,7 @@ import 'package:roam/features/community/screens/create_community_screen.dart';
 import 'package:roam/features/community/screens/edit_community_screen.dart';
 import 'package:roam/features/community/screens/mod_tools_screen.dart';
 import 'package:roam/features/home/screens/place_details_screen.dart';
+import 'package:roam/features/notifications/notification_screen.dart';
 import 'package:roam/features/post/screens/add_post_type_screen.dart';
 import 'package:roam/features/post/screens/comment_screen.dart';
 import 'package:roam/features/trips/screens/plan_trip_screen.dart';
@@ -81,5 +82,8 @@ final loggedInRoute = RouteMap(routes: {
         child: CommentsScreen(
           postId: routeData.pathParameters['postId']!,
         ),
+      ),
+  '/notifications': (_) => const MaterialPage(
+        child: NotificationsScreen(),
       ),
 });

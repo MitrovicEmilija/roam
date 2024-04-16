@@ -41,6 +41,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(18),
@@ -57,27 +59,20 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
                         fontSize: 27,
-                        color: Pallete.lightGreen,
+                        color: Colors.blue,
                       ),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Pallete.lightGreen,
+                  IconButton(
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.blue,
+                      size: 40,
                     ),
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.search,
-                        color: Pallete.white,
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        showSearch(
-                            context: context,
-                            delegate: SearchPlaceDelegate(ref));
-                      },
-                    ),
+                    onPressed: () {
+                      showSearch(
+                          context: context, delegate: SearchPlaceDelegate(ref));
+                    },
                   ),
                 ],
               ),
@@ -94,6 +89,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         final place = fetchedPlaces[index];
                         return Card(
+                          color: currentTheme.cardColor,
                           elevation: 4.0,
                           margin: const EdgeInsets.all(8.0),
                           child: Row(
@@ -132,6 +128,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                             fontFamily: 'Poppins',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 17,
+                                            color: Colors.black,
                                           ),
                                         ),
                                         const SizedBox(height: 8),
@@ -139,18 +136,18 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                           children: [
                                             const Icon(
                                               Icons.location_on,
-                                              color: Pallete.blue,
+                                              color: Colors.blue,
                                               size: 20,
                                             ),
                                             const SizedBox(
-                                                width:
-                                                    4), // Adjust spacing here
+                                              width: 4,
+                                            ), // Adjust spacing here
                                             Text(
                                               place.country,
                                               style: const TextStyle(
                                                 fontFamily: 'Poppins',
                                                 fontSize: 14,
-                                                color: Pallete.blue,
+                                                color: Colors.blue,
                                               ),
                                             ),
                                           ],
@@ -160,7 +157,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 8, vertical: 4),
                                           decoration: BoxDecoration(
-                                            color: Pallete.lightGreen,
+                                            color: Colors.yellow,
                                             borderRadius:
                                                 BorderRadius.circular(4),
                                           ),
@@ -182,9 +179,14 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                                               alignment: Alignment.topRight,
                                               child: IconButton(
                                                 icon: place.isLiked
-                                                    ? const Icon(Icons.favorite)
+                                                    ? const Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.red,
+                                                      )
                                                     : const Icon(
-                                                        Icons.favorite_border),
+                                                        Icons.favorite_border,
+                                                        color: Colors.red,
+                                                      ),
                                                 onPressed: () {
                                                   if (place.isLiked) {
                                                     dislikePlace(

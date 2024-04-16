@@ -27,7 +27,7 @@ class ModToolsScreen extends StatelessWidget {
             fontFamily: 'Poppins',
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Pallete.blue,
+            color: Colors.blueGrey,
           ),
         ),
       ),

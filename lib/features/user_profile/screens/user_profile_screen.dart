@@ -23,6 +23,8 @@ class UserProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return Scaffold(
       body: ref.watch(getUserDataProvider(uid)).when(
             data: (user) => NestedScrollView(
@@ -36,7 +38,7 @@ class UserProfileScreen extends ConsumerWidget {
                       children: [
                         Positioned.fill(
                           child: Container(
-                            color: Pallete.lightBlue,
+                            color: currentTheme.scaffoldBackgroundColor,
                           ),
                         ),
                         Container(
@@ -58,8 +60,10 @@ class UserProfileScreen extends ConsumerWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25),
+                              backgroundColor: currentTheme.primaryColorDark,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 25,
+                              ),
                             ),
                             child: const Text(
                               'Edit Profile',
@@ -67,7 +71,7 @@ class UserProfileScreen extends ConsumerWidget {
                                 fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Pallete.blue,
+                                color: Pallete.white,
                               ),
                             ),
                           ),
@@ -89,6 +93,7 @@ class UserProfileScreen extends ConsumerWidget {
                                   fontSize: 19,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
+                                  color: Colors.blueGrey,
                                 ),
                               ),
                             ],
@@ -100,6 +105,7 @@ class UserProfileScreen extends ConsumerWidget {
                               style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 14,
+                                color: Colors.blueGrey,
                               ),
                             ),
                           ),
@@ -125,7 +131,8 @@ class UserProfileScreen extends ConsumerWidget {
                               style: const TextStyle(
                                 fontFamily: 'Mulish',
                                 fontSize: 16,
-                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey,
                               ),
                             ),
                             onTap: () {

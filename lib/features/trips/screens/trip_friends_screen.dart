@@ -28,7 +28,10 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return AlertDialog(
+      backgroundColor: currentTheme.scaffoldBackgroundColor,
       actions: [
         TextButton(
           onPressed: () {
@@ -43,7 +46,7 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
             style: TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
-              color: Pallete.blue,
+              color: Pallete.yellow,
               fontSize: 17,
             ),
           ),
@@ -68,7 +71,7 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
         style: TextStyle(
           fontFamily: 'Poppins',
           fontWeight: FontWeight.bold,
-          color: Pallete.blue,
+          color: Colors.green,
           fontSize: 20,
         ),
       ),
@@ -93,7 +96,8 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold,
-                          color: isSelected ? Pallete.green : Colors.black,
+                          color:
+                              isSelected ? Colors.greenAccent : Colors.blueGrey,
                           fontSize: 17,
                         ),
                       ),
@@ -109,7 +113,7 @@ class _TripFriendsScreenState extends ConsumerState<TripFriendsScreen> {
                       trailing: isSelected
                           ? const Icon(
                               Icons.check,
-                              color: Pallete.green,
+                              color: Colors.greenAccent,
                             )
                           : null,
                     );

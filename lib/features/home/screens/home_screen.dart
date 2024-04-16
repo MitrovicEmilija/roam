@@ -6,6 +6,7 @@ import 'package:roam/core/constants/constants.dart';
 import 'package:roam/features/auth/controller/auth_controller.dart';
 import 'package:roam/features/home/screens/profile_drawer.dart';
 import 'package:roam/theme/pallete.dart';
+import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Scaffold.of(context).openEndDrawer();
   }
 
+  void navigateToNotifications() {
+    Routemaster.of(context).push('/notifications');
+  }
+
   void onPageChanged(int page) {
     setState(() {
       _page = page;
@@ -30,15 +35,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
+    final currentTheme = ref.watch(themeNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              navigateToNotifications();
+            },
             icon: const Icon(
               Icons.notifications,
-              color: Pallete.lightGreen,
+              color: Colors.blue,
               size: 25,
             ),
           ),
@@ -55,8 +63,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       endDrawer: const ProfileDrawer(),
       body: Constants.tabWidgets[_page],
       bottomNavigationBar: CupertinoTabBar(
-        activeColor: Pallete.blue,
-        backgroundColor: Pallete.white,
+        activeColor: currentTheme.primaryColorDark,
+        backgroundColor: currentTheme.scaffoldBackgroundColor,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

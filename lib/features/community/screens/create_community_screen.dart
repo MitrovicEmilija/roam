@@ -35,24 +35,10 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
     final isLoading = ref.watch(communityControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(bottom: 10),
-          child: Text(
-            'Create a community',
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Pallete.lightGreen,
-            ),
-          ),
-        ),
-      ),
       body: isLoading
           ? const Loader()
           : Padding(
-              padding: const EdgeInsets.all(18.0).copyWith(top: 5),
+              padding: const EdgeInsets.all(18.0).copyWith(top: 15),
               child: Column(
                 children: [
                   const Align(

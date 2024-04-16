@@ -15,15 +15,14 @@ class ProfileDrawer extends ConsumerWidget {
     Routemaster.of(context).push('/u/$uid');
   }
 
-  /*
   void toggleTheme(WidgetRef ref) {
     ref.read(themeNotifierProvider.notifier).toggleTheme();
   }
-  */
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final currentTheme = ref.watch(themeNotifierProvider);
 
     return Drawer(
       child: SafeArea(
@@ -39,8 +38,10 @@ class ProfileDrawer extends ConsumerWidget {
             Text(
               user.username ?? '',
               style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                color: Colors.blueGrey,
               ),
             ),
             const SizedBox(
@@ -48,25 +49,39 @@ class ProfileDrawer extends ConsumerWidget {
             ),
             const Divider(),
             ListTile(
-              title: const Text('My Profile'),
-              leading: const Icon(
+              title: const Text(
+                'My Profile',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              leading: Icon(
                 Icons.person,
-                color: Pallete.blue,
+                color: currentTheme.iconTheme.color,
               ),
               onTap: () => navigateToUserProfile(context, user.uid),
             ),
             ListTile(
-              title: const Text('Log Out'),
-              leading: const Icon(
+              title: const Text(
+                'Log Out',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              leading: Icon(
                 Icons.logout,
-                color: Pallete.blue,
+                color: currentTheme.iconTheme.color,
               ),
               onTap: () => logOut(ref),
             ),
             Switch.adaptive(
-              value: true,
-              activeColor: Pallete.lightGreen,
-              onChanged: (bool value) {},
+              value: ref.watch(themeNotifierProvider.notifier).mode ==
+                  ThemeMode.dark,
+              onChanged: (val) => toggleTheme(ref),
             ),
           ],
         ),

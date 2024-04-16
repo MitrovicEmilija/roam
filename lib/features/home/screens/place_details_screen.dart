@@ -24,6 +24,8 @@ class PlaceDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return Scaffold(
       body: ref.watch(getPlacesByNameProvider(name)).when(
             data: (place) => NestedScrollView(
@@ -37,7 +39,7 @@ class PlaceDetailsScreen extends ConsumerWidget {
                       children: [
                         Positioned.fill(
                           child: Container(
-                            color: Pallete.lightBlue,
+                            color: currentTheme.scaffoldBackgroundColor,
                           ),
                         ),
                         Container(
@@ -122,8 +124,9 @@ class PlaceDetailsScreen extends ConsumerWidget {
                         'How much do you like it?',
                         style: TextStyle(
                           fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold,
                           fontSize: 15,
-                          color: Pallete.green,
+                          color: Colors.blueGrey,
                         ),
                       ),
                     ),

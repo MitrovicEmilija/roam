@@ -31,10 +31,11 @@ class PostCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final currentTheme = ref.watch(themeNotifierProvider);
 
     return Card(
       elevation: 4.0,
-      color: Pallete.lightBlue,
+      color: currentTheme.cardColor,
       margin: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +55,7 @@ class PostCard extends ConsumerWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Pallete.lightGreen,
+                color: Colors.blue,
               ),
             ),
             subtitle: GestureDetector(
@@ -63,9 +64,7 @@ class PostCard extends ConsumerWidget {
               },
               child: Text(
                 post.username,
-                style: const TextStyle(
-                  fontSize: 12,
-                ),
+                style: const TextStyle(fontSize: 12, color: Pallete.greyText),
               ),
             ),
             trailing: post.uid == user.uid
@@ -75,7 +74,7 @@ class PostCard extends ConsumerWidget {
                     },
                     icon: const Icon(
                       Icons.delete,
-                      color: Pallete.lightGreen,
+                      color: Colors.green,
                     ),
                   )
                 : null,
@@ -88,9 +87,11 @@ class PostCard extends ConsumerWidget {
                 Text(
                   post.title,
                   style: const TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins'),
+                    fontSize: 19,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    color: Colors.blue,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -111,7 +112,9 @@ class PostCard extends ConsumerWidget {
                     child: Text(
                       post.description!,
                       style: const TextStyle(
-                          color: Pallete.greyText, fontFamily: 'Mulish'),
+                        color: Pallete.greyText,
+                        fontFamily: 'Mulish',
+                      ),
                     ),
                   ),
               ],
@@ -127,12 +130,16 @@ class PostCard extends ConsumerWidget {
                   },
                   icon: const Icon(
                     Icons.comment,
-                    color: Pallete.lightGreen,
+                    color: Colors.yellow,
                   ),
                 ),
                 Text(
                   '${post.commentCount == 0 ? 'Comment' : post.commentCount}',
-                  style: const TextStyle(fontSize: 17, fontFamily: 'Mulish'),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Mulish',
+                    color: Pallete.greyText,
+                  ),
                 ),
               ],
             ),

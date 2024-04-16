@@ -56,19 +56,20 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(userProfileControllerProvider);
+    final currentTheme = ref.watch(themeNotifierProvider);
 
     return ref.watch(getUserDataProvider(widget.uid)).when(
           data: (user) => Scaffold(
-            backgroundColor: Pallete.lightBlue,
+            backgroundColor: currentTheme.scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Pallete.lightBlue,
+              backgroundColor: currentTheme.appBarTheme.backgroundColor,
               title: const Text(
                 'Edit Profile',
                 style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
-                  color: Pallete.blue,
+                  color: Colors.blueGrey,
                 ),
               ),
               centerTitle: false,
@@ -81,7 +82,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: Pallete.lightGreen,
+                      color: Colors.blueGrey,
                     ),
                   ),
                 ),
@@ -123,8 +124,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           controller: userNameController,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Colors.white,
                             hintText: 'Name',
+                            hintStyle: const TextStyle(color: Colors.blueGrey),
                             focusedBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 color: Pallete.blue,

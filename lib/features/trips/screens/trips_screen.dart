@@ -28,19 +28,21 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0).copyWith(left: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'My trips',
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Pallete.lightGreen,
+                color: currentTheme.textTheme.headline1!.color,
               ),
             ),
             const SizedBox(
@@ -56,8 +58,11 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                           final trip = fetchedTrips[index];
                           return Card(
                             elevation: 5.0,
-                            margin:
-                                const EdgeInsets.only(bottom: 20, right: 10),
+                            margin: const EdgeInsets.only(
+                              bottom: 20,
+                              right: 10,
+                            ),
+                            color: currentTheme.cardColor,
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Column(
@@ -69,7 +74,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                                       fontFamily: 'Poppins',
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.black,
+                                      color: Colors.blueGrey,
                                     ),
                                   ),
                                   const SizedBox(
@@ -95,9 +100,11 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                                             icon: const Icon(Icons.person_add),
                                             onPressed: () {
                                               navigateToFriendsScreen(
-                                                  context, trip.name);
+                                                context,
+                                                trip.name,
+                                              );
                                             },
-                                            color: Pallete.blue,
+                                            color: Colors.blue,
                                             iconSize: 24,
                                           ),
                                           IconButton(
@@ -105,7 +112,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                                             onPressed: () {
                                               deleteTrip(ref, context, trip);
                                             },
-                                            color: Pallete.lightGreen,
+                                            color: Colors.green,
                                             iconSize: 24,
                                           ),
                                         ],
@@ -120,7 +127,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                                     children: [
                                       const Icon(
                                         Icons.location_on,
-                                        color: Pallete.blue,
+                                        color: Colors.blue,
                                         size: 16,
                                       ),
                                       Expanded(
@@ -129,7 +136,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                                           style: const TextStyle(
                                             fontFamily: 'Poppins',
                                             fontSize: 14,
-                                            color: Pallete.blue,
+                                            color: Colors.blue,
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                         ),

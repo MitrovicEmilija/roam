@@ -38,7 +38,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Poppins',
-                          color: Pallete.green,
+                          color: Colors.green,
                           fontSize: 27,
                           fontWeight: FontWeight.bold,
                         ),
@@ -67,7 +67,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           style: TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 18,
-                            color: Pallete.greyText,
+                            color: Colors.blue,
                           ),
                         ),
                       ),
@@ -100,7 +100,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             style: TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 18,
-                              color: Pallete.greyText,
+                              color: Colors.blue,
                             ),
                           ),
                         ),
@@ -132,7 +132,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           style: TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 18,
-                            color: Pallete.greyText,
+                            color: Colors.blue,
                           ),
                         ),
                       ),
@@ -166,7 +166,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             ref
                                 .read(authControllerProvider.notifier)
                                 .signInWithEmailPassword(
-                                    context, email, password, username, true);
+                                  context,
+                                  email,
+                                  password,
+                                  username,
+                                  true,
+                                );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Pallete.blue,
@@ -190,7 +195,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                             ref
                                 .read(authControllerProvider.notifier)
                                 .signInWithEmailPassword(
-                                    context, email, password, username, false);
+                                  context,
+                                  email,
+                                  password,
+                                  username,
+                                  false,
+                                );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Pallete.blue,
@@ -221,9 +231,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           style: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 13,
-                            color: Pallete.greyText,
+                            color: Colors.green,
                             decoration: TextDecoration.underline,
-                            decorationColor: Pallete.green,
+                            decorationColor: Colors.green,
                           ),
                         ),
                       )
