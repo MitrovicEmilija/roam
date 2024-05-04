@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:roam/core/constants/constants.dart';
 
+import 'package:roam/core/constants/constants.dart';
 import 'package:roam/core/constants/firebase_constants.dart';
 import 'package:roam/core/failure.dart';
 import 'package:roam/core/providers/firebase_providers.dart';
@@ -55,7 +55,9 @@ class AuthRepository {
       final googleAuth = await googleUser?.authentication;
 
       final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
 
       UserCredential userCredential;
       if (isFromLogin) {

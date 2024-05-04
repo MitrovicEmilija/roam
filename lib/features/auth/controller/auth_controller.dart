@@ -52,21 +52,27 @@ class AuthController extends StateNotifier<bool> {
     final user = await _authRepository.signInWithGoogle(isFromLogin);
     state = false;
     user.fold(
-        (l) => showSnackBar(context, l.message),
-        (userModel) =>
-            _ref.read(userProvider.notifier).update((state) => userModel));
+      (l) => showSnackBar(context, l.message),
+      (userModel) =>
+          _ref.read(userProvider.notifier).update((state) => userModel),
+    );
   }
 
   void signInWithEmailPassword(BuildContext context, String email,
       String password, String? username, bool isFromLogin) async {
     state = true;
     final user = await _authRepository.signInWithEmailPassword(
-        email, password, username, isFromLogin);
+      email,
+      password,
+      username,
+      isFromLogin,
+    );
     state = false;
     user.fold(
-        (l) => showSnackBar(context, l.message),
-        (userModel) =>
-            _ref.read(userProvider.notifier).update((state) => userModel));
+      (l) => showSnackBar(context, l.message),
+      (userModel) =>
+          _ref.read(userProvider.notifier).update((state) => userModel),
+    );
   }
 
   void logOut() async {

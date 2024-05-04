@@ -76,16 +76,19 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       ),
                       TextField(
                         controller: emailController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'emilija@gmail.com',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 12,
                             color: Pallete.greyText,
                           ),
                           filled: true,
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(18),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.all(18),
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
@@ -110,16 +113,19 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       if (!isLogin)
                         TextField(
                           controller: usernameController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             hintText: 'ema',
-                            hintStyle: TextStyle(
+                            hintStyle: const TextStyle(
                               fontFamily: 'Mulish',
                               fontSize: 12,
                               color: Pallete.greyText,
                             ),
                             filled: true,
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(18),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.all(18),
                           ),
                         ),
                       const SizedBox(
@@ -141,16 +147,19 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       ),
                       TextField(
                         controller: passController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           hintText: 'password',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontFamily: 'Mulish',
                             fontSize: 12,
                             color: Pallete.greyText,
                           ),
                           filled: true,
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(18),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.all(18),
                         ),
                         obscureText: true,
                       ),
@@ -176,6 +185,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Pallete.blue,
                             minimumSize: const Size(double.infinity, 60),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                           child: const Text(
                             'Log In',
@@ -205,6 +217,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Pallete.blue,
                             minimumSize: const Size(double.infinity, 60),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                           child: const Text(
                             'Sign Up',
