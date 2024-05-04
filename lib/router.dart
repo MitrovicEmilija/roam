@@ -73,6 +73,11 @@ final loggedInRoute = RouteMap(routes: {
           name: routeData.pathParameters['name']!,
         ),
       ),
+  '/place/:name': (routeData) => MaterialPage(
+        child: PlaceDetailsScreen(
+          name: routeData.pathParameters['name']!,
+        ),
+      ),
   '/add-post/:type': (routeData) => MaterialPage(
         child: AddPostTypeScreen(
           type: routeData.pathParameters['type']!,

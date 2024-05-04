@@ -55,9 +55,7 @@ class HomeController extends StateNotifier<List<Place>> {
     try {
       // Set loading state to true
       state = [];
-
       List<Place> places = await _homeRepository.fetchPlacesFromTrail();
-
       // Update fetched places
       state = places;
 
@@ -76,8 +74,10 @@ class HomeController extends StateNotifier<List<Place>> {
     final user = _ref.read(userProvider)!;
     state = [];
     final res = await _homeRepository.storeToPreferences(placeName, user.uid);
-    res.fold((l) => showSnackBar(context, l.message),
-        (r) => showSnackBar(context, 'Added to favourites.'));
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) => showSnackBar(context, 'Added to favourites.'),
+    );
   }
 
   void deleteFromPreferences(String placeName, BuildContext context) async {
@@ -85,8 +85,10 @@ class HomeController extends StateNotifier<List<Place>> {
     state = [];
     final res =
         await _homeRepository.deleteFromPreferences(placeName, user.uid);
-    res.fold((l) => showSnackBar(context, l.message),
-        (r) => showSnackBar(context, 'Removed from favourites.'));
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) => showSnackBar(context, 'Removed from favourites.'),
+    );
   }
 
   void ratePlace(int rating, String placeName, BuildContext context) async {

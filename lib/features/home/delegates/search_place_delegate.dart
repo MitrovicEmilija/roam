@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:roam/core/common/error_text.dart';
 import 'package:roam/core/common/loader.dart';
 import 'package:roam/features/home/controller/home_controller.dart';
+import 'package:roam/theme/pallete.dart';
 
 import 'package:routemaster/routemaster.dart';
 
@@ -42,8 +43,9 @@ class SearchPlaceDelegate extends SearchDelegate {
             itemBuilder: (BuildContext context, int index) {
               final place = places[index];
               return Card(
+                color: Pallete.lightBlue,
                 elevation: 4.0,
-                margin: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.all(8.0).copyWith(bottom: 1),
                 child: ListTile(
                   leading: SizedBox(
                     width: 100,
@@ -56,8 +58,17 @@ class SearchPlaceDelegate extends SearchDelegate {
                       ),
                     ),
                   ),
-                  title: Text(place.name),
-                  onTap: () => navigateToPlace(context, place.name),
+                  title: Text(
+                    place.name,
+                    style: const TextStyle(
+                      color: Colors.blueGrey,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  onTap: () => navigateToPlace(
+                    context,
+                    Uri.decodeComponent(place.name),
+                  ),
                 ),
               );
             },
@@ -68,6 +79,6 @@ class SearchPlaceDelegate extends SearchDelegate {
   }
 
   void navigateToPlace(BuildContext context, String placeName) {
-    Routemaster.of(context).push('/place/$placeName');
+    Routemaster.of(context).push('/place/${Uri.decodeComponent(placeName)}');
   }
 }
