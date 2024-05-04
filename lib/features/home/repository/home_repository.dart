@@ -68,7 +68,7 @@ class HomeRepository {
   }
 
   Future<List<Place>> fetchPlacesFromTrail() async {
-    const String apiKey = 'c2950de0e7394b69985196474fda0292';
+    const String apiKey = '';
     const String baseUrl =
         'https://api.geoapify.com/v2/places?categories=entertainment,catering,accommodation&filter=rect:2.3380862086841603,48.861868995221684,2.357539944586165,48.850557094041235&limit=20&apiKey=$apiKey';
 
