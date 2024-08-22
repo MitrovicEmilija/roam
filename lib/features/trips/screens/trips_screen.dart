@@ -42,7 +42,7 @@ class _TripsScreenState extends ConsumerState<TripsScreen> {
                 fontFamily: 'Poppins',
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: currentTheme.textTheme.headline1!.color,
+                color: currentTheme.textTheme.displayLarge!.color,
               ),
             ),
             const SizedBox(

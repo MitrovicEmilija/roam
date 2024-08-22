@@ -35,31 +35,31 @@ class Pallete {
     primaryColorDark: lightGreen,
     primaryIconTheme: const IconThemeData(color: blue),
     textTheme: const TextTheme(
-      headline1: TextStyle(
+      displayLarge: TextStyle(
           color: lightGreen,
           fontSize: 24,
           fontWeight: FontWeight.bold), // Adjust size and weight as needed
-      headline2: TextStyle(
+      displayMedium: TextStyle(
           color: lightGreen, fontSize: 22, fontWeight: FontWeight.bold),
-      headline3: TextStyle(
+      displaySmall: TextStyle(
           color: lightGreen, fontSize: 20, fontWeight: FontWeight.bold),
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
           color: lightGreen, fontSize: 18, fontWeight: FontWeight.bold),
-      headline5: TextStyle(
+      headlineSmall: TextStyle(
           color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-      headline6: TextStyle(
+      titleLarge: TextStyle(
           color: lightGreen, fontSize: 14, fontWeight: FontWeight.bold),
-      subtitle1:
+      titleMedium:
           TextStyle(color: lightGreen, fontSize: 16), // Adjust size as needed
-      subtitle2: TextStyle(color: lightGreen, fontSize: 14),
-      bodyText1: TextStyle(color: lightGreen, fontSize: 16),
-      bodyText2: TextStyle(color: lightGreen, fontSize: 14),
-      button: TextStyle(
+      titleSmall: TextStyle(color: lightGreen, fontSize: 14),
+      bodyLarge: TextStyle(color: lightGreen, fontSize: 16),
+      bodyMedium: TextStyle(color: lightGreen, fontSize: 14),
+      labelLarge: TextStyle(
           color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.bold), // Button text color is white
-      caption: TextStyle(color: lightGreen, fontSize: 12),
-      overline: TextStyle(color: lightGreen, fontSize: 10),
+      bodySmall: TextStyle(color: lightGreen, fontSize: 12),
+      labelSmall: TextStyle(color: lightGreen, fontSize: 10),
     ),
     cardTheme: const CardTheme(color: lightGreen),
   );
@@ -81,35 +81,49 @@ class Pallete {
     primaryIconTheme: const IconThemeData(color: blue),
     primaryColorDark: blue,
     highlightColor: Colors.white,
-    backgroundColor: Colors.white,
     textTheme: const TextTheme(
-      headline1: TextStyle(
+      displayLarge: TextStyle(
           color: Colors.white,
           fontSize: 24,
           fontWeight: FontWeight.bold), // Adjust size and weight as needed
-      headline2: TextStyle(
+      displayMedium: TextStyle(
           color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-      headline3: TextStyle(
+      displaySmall: TextStyle(
           color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-      headline4: TextStyle(
+      headlineMedium: TextStyle(
           color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-      headline5: TextStyle(
+      headlineSmall: TextStyle(
           color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-      headline6: TextStyle(
+      titleLarge: TextStyle(
           color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-      subtitle1:
+      titleMedium:
           TextStyle(color: Colors.white, fontSize: 16), // Adjust size as needed
-      subtitle2: TextStyle(color: Colors.white, fontSize: 14),
-      bodyText1: TextStyle(color: Colors.white, fontSize: 16),
-      bodyText2: TextStyle(color: Colors.white, fontSize: 14),
-      button: TextStyle(
+      titleSmall: TextStyle(color: Colors.white, fontSize: 14),
+      bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
+      bodyMedium: TextStyle(color: Colors.white, fontSize: 14),
+      labelLarge: TextStyle(
           color: blue,
           fontSize: 16,
           fontWeight: FontWeight.bold), // Button text color is blue
-      caption: TextStyle(color: Colors.white, fontSize: 12),
-      overline: TextStyle(color: Colors.white, fontSize: 10),
+      bodySmall: TextStyle(color: Colors.white, fontSize: 12),
+      labelSmall: TextStyle(color: Colors.white, fontSize: 10),
     ),
     cardTheme: const CardTheme(color: Colors.white),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.light, // or Brightness.dark for a dark theme
+      primary: Colors.blue, // Main color for the app
+      onPrimary: Colors.white, // Color for text/icons on the primary color
+      secondary: Colors.green, // Secondary color for accenting
+      onSecondary: Colors.black, // Color for text/icons on the secondary color
+      background: Colors.white, // Background color of the app
+      onBackground:
+          Colors.black, // Color for text/icons on the background color
+      surface: Colors.white, // Color for surfaces like cards, sheets, etc.
+      onSurface: Colors.black, // Color for text/icons on surfaces
+      error: Colors.red, // Color for error states
+      onError: Colors.white, // Color for text/icons on error color
+      outline: Colors.grey, // Variants of the secondary color
+    ),
   );
 }
 
